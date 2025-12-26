@@ -1,7 +1,4 @@
 # aose-2
-![image alt](https://github.com/ananddeahmukh18-cell/aose-2/blob/c200d3c41c270a70087bd9e813ac80f49fb54533/aose1.jpg)
-![image alt](https://github.com/ananddeahmukh18-cell/aose-2/blob/c200d3c41c270a70087bd9e813ac80f49fb54533/aose%20ad.jpg)
-![image alt](https://github.com/ananddeahmukh18-cell/aose-2/blob/c200d3c41c270a70087bd9e813ac80f49fb54533/AOSE%20Hoodie.jpg)
 ![image alt]()
 ![image alt]
 ![image alt]
