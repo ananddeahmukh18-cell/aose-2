@@ -1,1046 +1,684 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AOSE Clothing | Timeless Elegance, Modern Legacy</title>
-
-  <!-- Fonts & Libraries -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-  <style>
-    :root {
-      --green: #003B23;
-      --gold: #DEC175;
-      --sand: #ECDFC3;
-      --white: #ffffff;
-      --text: #222222;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: var(--sand);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    /* NAVBAR */
-    nav {
-      background: var(--white);
-      padding: 10px 5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-    }
-
-    .logo-area img {
-      height: 60px;
-    }
-
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      letter-spacing: 2px;
-      color: var(--green);
-      font-weight: 700;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 25px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 600;
-    }
-
-    .nav-links a {
-      color: var(--green);
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .search-box {
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid var(--green);
-      padding: 2px 5px;
-    }
-
-    .search-box input {
-      border: none;
-      outline: none;
-      background: transparent;
-      font-size: 14px;
-      width: 140px;
-    }
-
-    .cart-trigger {
-      cursor: pointer;
-      position: relative;
-      font-size: 20px;
-      color: var(--green);
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: var(--gold);
-      color: #000;
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 50%;
-      font-weight: 700;
-    }
-
-    /* SECTIONS */
-    .page-section {
-      display: none;
-      min-height: 80vh;
-      padding-top: 20px;
-    }
-
-    .page-section.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* HERO */
-    .hero {
-      height: 75vh;
-      background: linear-gradient(rgba(0,59,35,0.55), rgba(0,59,35,0.4)), url('aose-ad.jpg');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-align: center;
-      padding: 0 5%;
-    }
-
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.5rem;
-      letter-spacing: 4px;
-    }
-
-    .hero p {
-      margin-top: 15px;
-      font-size: 1.05rem;
-    }
-
-    .hero button {
-      margin-top: 25px;
-      padding: 14px 38px;
-      border-radius: 40px;
-    }
-
-    /* BUTTONS */
-    .btn {
-      padding: 12px 24px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid var(--green);
-      transition: 0.3s;
-    }
-
-    .btn-primary {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .btn-primary:hover {
-      background: var(--gold);
-      color: #000;
-      border-color: var(--gold);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--green);
-    }
-
-    .btn-outline:hover {
-      background: var(--green);
-      color: #fff;
-    }
-
-    /* PRODUCT GRID */
-    .section-title {
-      text-align: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      margin: 40px 0 20px;
-      color: var(--green);
-    }
-
-    .category-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: 1px solid var(--green);
-      padding: 8px 22px;
-      cursor: pointer;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-      border-radius: 50px;
-      color: var(--green);
-    }
-
-    .tab-btn.active,
-    .tab-btn:hover {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 30px;
-      padding: 0 6% 50px;
-    }
-
-    .product-card {
-      background: var(--white);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-main-img {
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-    }
-
-    .thumb-row {
-      display: flex;
-      gap: 6px;
-      padding: 6px 10px;
-      background: var(--sand);
-      justify-content: center;
-    }
-
-    .thumb-row img {
-      width: 48px;
-      height: 48px;
-      object-fit: cover;
-      cursor: pointer;
-      border-radius: 4px;
-      border: 2px solid transparent;
-    }
-
-    .thumb-row img.active-thumb {
-      border-color: var(--gold);
-    }
-
-    .p-info {
-      padding: 18px 20px 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .p-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-    }
-
-    .p-category {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--green);
-    }
-
-    .p-price {
-      font-weight: 700;
-      color: var(--green);
-    }
-
-    .p-size {
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .p-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    /* CART SIDEBAR */
-    #cart-sidebar {
-      position: fixed;
-      right: -420px;
-      top: 0;
-      width: 400px;
-      height: 100vh;
-      background: var(--white);
-      z-index: 2000;
-      transition: right 0.4s ease;
-      box-shadow: -10px 0 25px rgba(0,0,0,0.15);
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #cart-sidebar.active {
-      right: 0;
-    }
-
-    .cart-item {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .cart-item img {
-      width: 60px;
-      height: 60px;
-      border-radius: 6px;
-      object-fit: cover;
-    }
-
-    .cart-footer {
-      border-top: 1px solid #eee;
-      padding-top: 15px;
-      margin-top: auto;
-    }
-
-    /* CHECKOUT PAGE */
-    #checkout-page {
-      padding: 40px 6% 80px;
-      background: var(--sand);
-    }
-
-    .checkout-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr);
-      gap: 30px;
-    }
-
-    .checkout-box {
-      background: var(--white);
-      border-radius: 10px;
-      padding: 20px 22px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .checkout-box h3 {
-      font-family: 'Playfair Display', serif;
-      margin-bottom: 10px;
-      color: var(--green);
-    }
-
-    .checkout-item-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    .checkout-form label {
-      font-size: 13px;
-      display: block;
-      margin-top: 10px;
-      margin-bottom: 4px;
-    }
-
-    .checkout-form input,
-    .checkout-form textarea {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-size: 13px;
-    }
-
-    .checkout-form textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-
-    .small-note {
-      font-size: 11px;
-      color: #777;
-      margin-top: 4px;
-    }
-
-    .summary-total {
-      margin-top: 12px;
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--green);
-    }
-
-    .discount-row {
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .discount-row input {
-      flex: 1;
-      padding: 7px 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-size: 13px;
-    }
-
-    .discount-message {
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .upi-section {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    #qrcode {
-      margin: 10px auto;
-      width: 180px;
-      height: 180px;
-    }
-
-    /* ABOUT & MAP */
-    #about {
-      padding: 60px 8% 80px;
-      background: var(--white);
-    }
-
-    #about .about-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr);
-      gap: 40px;
-      align-items: center;
-    }
-
-    #about h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      margin-bottom: 10px;
-      color: var(--green);
-    }
-
-    #map {
-      width: 100%;
-      height: 280px;
-      border-radius: 10px;
-      border: 2px solid var(--green);
-    }
-
-    /* FOOTER */
-    footer {
-      background: var(--green);
-      color: #fff;
-      padding: 40px 6% 25px;
-      margin-top: 40px;
-    }
-
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .social-icons {
-      display: flex;
-      gap: 12px;
-      font-size: 18px;
-    }
-
-    .social-icons a {
-      color: #fff;
-    }
-
-    .footer-bottom {
-      margin-top: 20px;
-      font-size: 11px;
-      text-align: center;
-      opacity: 0.8;
-    }
-
-    /* WHATSAPP FLOAT */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #25D366;
-      color: white;
-      padding: 12px 16px;
-      border-radius: 30px;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      z-index: 1500;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .checkout-layout,
-      #about .about-inner {
-        grid-template-columns: 1fr;
-      }
-      nav {
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      .nav-links {
-        display: none; /* keep simple for GitHub static */
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOSE Clothing | Timeless Elegance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES & THEME --- */
+        :root {
+            --primary-green: #003B23;
+            --accent-gold: #DEC175;
+            --bg-cream: #ECDFC3;
+            --text-dark: #1a1a1a;
+            --white: #ffffff;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            background-color: var(--primary-green);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .cart-icon-wrapper {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent-gold);
+            color: var(--primary-green);
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(rgba(0,59,35,0.8), rgba(0,59,35,0.8)), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--bg-cream);
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        /* --- CONTROLS (Search & Filter) --- */
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 2rem 5%;
+        }
+
+        .search-bar {
+            padding: 10px 15px;
+            border: 2px solid var(--primary-green);
+            border-radius: 30px;
+            width: 300px;
+            background: transparent;
+            outline: none;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: transparent;
+            border: 1px solid var(--primary-green);
+            color: var(--primary-green);
+            cursor: pointer;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary-green);
+            color: var(--accent-gold);
+        }
+
+        /* --- PRODUCT GRID --- */
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 5% 4rem 5%;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .btn-group {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            border-radius: 5px;
+        }
+
+        .btn-add {
+            background-color: var(--primary-green);
+            color: var(--accent-gold);
+        }
+        
+        .btn-add:hover { background-color: #002a19; }
+
+        .btn-enquiry {
+            background-color: #25D366; /* WhatsApp Color */
+            color: white;
+            text-decoration: none;
+        }
+
+        /* --- CART SIDEBAR --- */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100%;
+            background: var(--white);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 2000;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .cart-sidebar.open { right: 0; }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .cart-footer {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .total-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-gold);
+            color: var(--primary-green);
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* --- CHECKOUT MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px dashed var(--primary-green);
+        }
+
+        .qr-img {
+            max-width: 200px;
+            margin: 10px 0;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--primary-green);
+            color: var(--accent-gold);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .social-icons {
+            margin: 1rem 0;
+            font-size: 1.5rem;
+        }
+        .social-icons i { margin: 0 10px; cursor: pointer; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .cart-sidebar { width: 100%; right: -100%; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav>
-    <div class="logo-area" onclick="showPage('home')">
-      <!-- AOSE logo image: place as 'aose-logo.png' in repo or change filename -->
-      <img src="aose-ad.jpg" alt="AOSE Clothing Logo">
-      <div class="logo-text">AOSE CLOTHING</div>
-    </div>
-    <div class="nav-links">
-      <a href="#" onclick="showPage('home')">Home</a>
-      <a href="#" onclick="showPage('shop')">Shop</a>
-      <a href="#" onclick="showPage('about')">About</a>
-      <a href="#" onclick="showPage('checkout-page')">Checkout</a>
-    </div>
-    <div class="nav-actions">
-      <div class="search-box">
-        <input id="search-input" type="text" placeholder="Search products..." onkeyup="runSearch()">
-        <span>🔍</span>
-      </div>
-      <div class="cart-trigger" onclick="toggleCart(true)">
-        🛒
-        <span id="cart-count" class="cart-count">0</span>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HOME -->
-  <section id="home" class="page-section active">
-    <div class="hero">
-      <div>
-        <h1>Timeless Elegance,<br>Modern Legacy.</h1>
-        <p>Crafted silhouettes, premium fabrics, and a bold wolf emblem – AOSE Clothing for those who lead the pack.</p>
-        <button class="btn btn-primary" onclick="showPage('shop')">Shop Collection</button>
-      </div>
-    </div>
-
-    <h2 class="section-title">Featured Picks</h2>
-    <div class="product-grid" id="featured-grid"></div>
-  </section>
-
-  <!-- SHOP -->
-  <section id="shop" class="page-section">
-    <h2 class="section-title">Shop AOSE</h2>
-    <div class="category-tabs">
-      <button class="tab-btn active" onclick="filterShop('all', this)">All</button>
-      <button class="tab-btn" onclick="filterShop('T-Shirts', this)">T‑Shirts</button>
-      <button class="tab-btn" onclick="filterShop('Hoodies', this)">Hoodies</button>
-      <button class="tab-btn" onclick="filterShop('Overshirts', this)">Overshirts</button>
-      <button class="tab-btn" onclick="filterShop('Caps', this)">Caps</button>
-    </div>
-    <div class="product-grid" id="main-shop-grid"></div>
-  </section>
-
-  <!-- ABOUT + MAP -->
-  <section id="about" class="page-section">
-    <div class="about-inner">
-      <div>
-        <h2>About AOSE</h2>
-        <p>AOSE Clothing blends heritage tailoring with modern streetwear energy. Each piece is designed to feel premium, last longer, and tell a story of ambition and discipline.</p>
-        <p style="margin-top:10px;">We operate from Mumbai and ship pan‑India. Select your delivery location using the map so our team can optimise dispatch and communicate accurate timelines.</p>
-        <p class="small-note">Pin a nearby location on the map and we will use it along with your address for logistics planning.</p>
-      </div>
-      <div>
-        <!-- Simple Google Maps iframe (static, no API key required) -->
-        <iframe
-          id="map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120612.91797053066!2d72.76313610776477!3d19.082039092891364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b63e0f6a4c2d%3A0xdeb68d97fff8e3e1!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-      </div>
-    </div>
-  </section>
-
-  <!-- CHECKOUT -->
-  <section id="checkout-page" class="page-section">
-    <h2 class="section-title">Checkout & Secure Payment</h2>
-    <div class="checkout-layout">
-      <!-- Order & Discount -->
-      <div class="checkout-box">
-        <h3>Order Summary</h3>
-        <div id="checkout-items-list" style="margin-top:10px;"></div>
-        <div class="discount-row">
-          <input id="discount-input" type="text" placeholder="Discount code (optional)">
-          <button class="btn btn-outline" style="padding:7px 14px;font-size:11px;" onclick="applyDiscount()">Apply</button>
+    <header>
+        <div class="logo-container">
+            <div class="logo-text">AOSE</div>
         </div>
-        <div id="discount-msg" class="discount-message"></div>
-        <div class="summary-total">
-          Payable Amount: ₹<span id="final-amount">0</span>
-        </div>
-        <p class="small-note">You will pay using UPI by scanning the AOSE QR below.</p>
-      </div>
-
-      <!-- Customer + Payment -->
-      <div class="checkout-box">
-        <h3>Delivery Details & Payment</h3>
-        <form class="checkout-form" onsubmit="event.preventDefault(); placeOrder();">
-          <label for="cust-name">Full Name</label>
-          <input id="cust-name" required>
-
-          <label for="cust-phone">Phone Number</label>
-          <input id="cust-phone" required>
-
-          <label for="cust-email">Email (for invoice)</label>
-          <input id="cust-email" type="email">
-
-          <label for="cust-address">Full Address</label>
-          <textarea id="cust-address" required></textarea>
-
-          <label for="cust-pin">Pincode</label>
-          <input id="cust-pin" required>
-
-          <div class="upi-section">
-            <p style="margin-top:10px;">Scan to Pay (UPI ID: <strong>7887731818@ybl</strong>)</p>
-            <div id="qrcode"></div>
-            <p class="small-note">After paying, click “Confirm Payment & Generate Invoice”.</p>
-          </div>
-
-          <button class="btn btn-primary" type="submit" style="margin-top:10px;width:100%;">Confirm Payment &amp; Generate Invoice</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- CART SIDEBAR -->
-  <div id="cart-sidebar">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-      <h3 style="font-family:'Playfair Display',serif;color:var(--green);">Your Cart</h3>
-      <span style="cursor:pointer;font-size:22px;" onclick="toggleCart(false)">✕</span>
-    </div>
-    <div id="cart-content" style="flex:1;overflow-y:auto;margin-top:10px;"></div>
-    <div class="cart-footer">
-      <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-        <span>Total</span>
-        <span>₹<span id="cart-total">0</span></span>
-      </div>
-      <button class="btn btn-primary" style="width:100%;" onclick="goToCheckout()">Checkout</button>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-top">
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:20px;">AOSE CLOTHING</div>
-        <div style="font-size:12px;margin-top:4px;">Timeless Elegance, Modern Legacy.</div>
-      </div>
-      <div class="social-icons">
-        <!-- Replace # with your real pages when ready -->
-        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">📷</a>
-        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">📘</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © <span id="year"></span> AOSE Clothing. All rights reserved.
-    </div>
-  </footer>
-
-  <!-- WHATSAPP FLOAT -->
-  <a class="whatsapp-float" href="https://wa.me/917887731818?text=Hi%20AOSE%2C%20I%20want%20to%20know%20more%20about%20your%20collection." target="_blank" rel="noopener noreferrer">
-    <span>💬</span> WhatsApp Enquiry
-  </a>
-
-  <script>
-    // CONFIG
-    const WHATSAPP_NUMBER = "917887731818";
-    const UPI_ID = "7887731818@ybl";
-
-    // PRODUCT DATA – add as many as you like
-    const products = [
-      {
-        id: 1,
-        name: "AOSE Heritage Crest Oversized T‑Shirt",
-        category: "T-Shirts",
-        price: 1299,
-        sizes: "S / M / L / XL",
-        images: ["aose-ad.jpg","aose-ad.jpg","aose-ad.jpg"],
-        featured: true
-      },
-      {
-        id: 2,
-        name: "Signature Wolf Embroidered Hoodie",
-        category: "Hoodies",
-        price: 2499,
-        sizes: "M / L / XL",
-        images: ["aose-ad.jpg","aose-ad.jpg"],
-        featured: true
-      },
-      {
-        id: 3,
-        name: "Classic Green Overshirt",
-        category: "Overshirts",
-        price: 2199,
-        sizes: "S / M / L / XL",
-        images: ["aose-ad.jpg"],
-        featured: true
-      },
-      {
-        id: 4,
-        name: "AOSE Minimal Logo Cap",
-        category: "Caps",
-        price: 899,
-        sizes: "Free Size",
-        images: ["aose-ad.jpg"],
-        featured: false
-      }
-      // add more products here in same structure
-    ];
-
-    let cart = [];
-    let currentTotal = 0;
-    let discountApplied = 0;
-
-    // UTIL
-    function showPage(id) {
-      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      window.scrollTo(0,0);
-      if (id === 'checkout-page') updateCheckoutSummary();
-    }
-
-    // SEARCH
-    function runSearch() {
-      const q = document.getElementById('search-input').value.toLowerCase();
-      const result = products.filter(p => p.name.toLowerCase().includes(q));
-      renderGrid(result, 'main-shop-grid');
-      showPage('shop');
-    }
-
-    // FILTER
-    function filterShop(category, btn) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const list = category === 'all' ? products : products.filter(p => p.category === category);
-      renderGrid(list, 'main-shop-grid');
-    }
-
-    // RENDER PRODUCTS
-    function renderGrid(list, containerId) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      container.innerHTML = list.map(p => {
-        const mainImg = p.images[0];
-        const thumbs = p.images.map((img, idx) => `
-          <img src="${img}" alt="${p.name} thumb" 
-               class="${idx === 0 ? 'active-thumb' : ''}" 
-               onclick="changeProductImage(${p.id}, '${img}', this)">
-        `).join('');
-        return `
-        <div class="product-card" id="product-${p.id}">
-          <img src="${mainImg}" alt="${p.name}" class="product-main-img" id="main-img-${p.id}">
-          <div class="thumb-row">${thumbs}</div>
-          <div class="p-info">
-            <div class="p-category">${p.category}</div>
-            <div class="p-title">${p.name}</div>
-            <div class="p-price">₹${p.price}</div>
-            <div class="p-size">Sizes: ${p.sizes}</div>
-            <div class="p-actions">
-              <button class="btn btn-outline" onclick="addToCart(${p.id})">Add to Cart</button>
-              <button class="btn btn-primary" onclick="buyNow(${p.id})">Buy Now</button>
+        <div class="nav-icons">
+            <i class="fab fa-whatsapp" onclick="window.open('https://wa.me/917887731818', '_blank')"></i>
+            <div class="cart-icon-wrapper" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cartCount">0</span>
             </div>
-          </div>
-        </div>`;
-      }).join('');
-    }
-
-    function changeProductImage(id, img, thumbEl) {
-      const main = document.getElementById(`main-img-${id}`);
-      if (main) main.src = img;
-      const card = document.getElementById(`product-${id}`);
-      if (!card) return;
-      card.querySelectorAll('.thumb-row img').forEach(t => t.classList.remove('active-thumb'));
-      thumbEl.classList.add('active-thumb');
-    }
-
-    // CART
-    function addToCart(id) {
-      const p = products.find(pr => pr.id === id);
-      if (!p) return;
-      cart.push(p);
-      updateCart();
-      toggleCart(true);
-    }
-
-    function buyNow(id) {
-      const p = products.find(pr => pr.id === id);
-      if (!p) return;
-      const msg = encodeURIComponent(`Hi AOSE,\nI want to buy:\n${p.name}\nPrice: ₹${p.price}\nPlease share size & payment details.`);
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-    }
-
-    function updateCart() {
-      const list = document.getElementById('cart-content');
-      const countSpan = document.getElementById('cart-count');
-      const totalSpan = document.getElementById('cart-total');
-
-      countSpan.innerText = cart.length;
-
-      if (cart.length === 0) {
-        list.innerHTML = '<p style="opacity:0.6;margin-top:40px;text-align:center;">Your cart is empty.</p>';
-        totalSpan.innerText = "0";
-        return;
-      }
-
-      list.innerHTML = cart.map((item, idx) => `
-        <div class="cart-item">
-          <img src="${item.images[0]}" alt="${item.name}">
-          <div style="flex:1;">
-            <div style="font-size:14px;font-weight:600;">${item.name}</div>
-            <div style="font-size:12px;color:var(--green);">₹${item.price}</div>
-          </div>
-          <span style="font-size:11px;color:red;cursor:pointer;" onclick="removeCartItem(${idx})">Remove</span>
         </div>
-      `).join('');
+    </header>
 
-      const total = cart.reduce((s, i) => s + i.price, 0);
-      totalSpan.innerText = total.toLocaleString('en-IN');
-    }
+    <section class="hero">
+        <h1>Timeless Elegance, Modern Legacy</h1>
+        <p>Discover the finest collection curated for the distinguished.</p>
+    </section>
 
-    function removeCartItem(index) {
-      cart.splice(index, 1);
-      updateCart();
-    }
+    <section class="controls">
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
+        <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+        <button class="filter-btn" onclick="filterCategory('Men', this)">Men</button>
+        <button class="filter-btn" onclick="filterCategory('Women', this)">Women</button>
+        <button class="filter-btn" onclick="filterCategory('Accessories', this)">Accessories</button>
+    </section>
 
-    function toggleCart(show) {
-      document.getElementById('cart-sidebar').classList.toggle('active', show);
-    }
+    <section class="products-container" id="productsContainer">
+        </section>
 
-    function goToCheckout() {
-      if (cart.length === 0) {
-        alert("Your cart is empty.");
-        return;
-      }
-      toggleCart(false);
-      showPage('checkout-page');
-    }
-
-    // CHECKOUT / DISCOUNT
-    function updateCheckoutSummary() {
-      const list = document.getElementById('checkout-items-list');
-      if (!list) return;
-      if (cart.length === 0) {
-        list.innerHTML = '<p style="font-size:13px;opacity:0.7;">No items in cart. Add products from the Shop.</p>';
-        document.getElementById('final-amount').innerText = "0";
-        return;
-      }
-      list.innerHTML = cart.map(item => `
-        <div class="checkout-item-row">
-          <span>${item.name}</span>
-          <span>₹${item.price}</span>
+    <footer>
+        <div class="logo-text" style="font-size: 1.5rem;">AOSE</div>
+        <div class="social-icons">
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-twitter"></i>
         </div>
-      `).join('');
-      currentTotal = cart.reduce((s, i) => s + i.price, 0);
-      updateFinalAmount();
-    }
+        <p>&copy; 2024 AOSE Clothing. All rights reserved.</p>
+    </footer>
 
-    function applyDiscount() {
-      const code = document.getElementById('discount-input').value.trim().toUpperCase();
-      const msgEl = document.getElementById('discount-msg');
-      if (code === "AOSE10") {
-        discountApplied = currentTotal * 0.10;
-        msgEl.innerText = "AOSE10 applied – 10% off.";
-        msgEl.style.color = "green";
-      } else if (code === "") {
-        discountApplied = 0;
-        msgEl.innerText = "";
-      } else {
-        discountApplied = 0;
-        msgEl.innerText = "Invalid code.";
-        msgEl.style.color = "red";
-      }
-      updateFinalAmount();
-    }
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <i class="fas fa-times" style="cursor:pointer;" onclick="toggleCart()"></i>
+        </div>
+        <div class="cart-items" id="cartItems">
+            </div>
+        <div class="cart-footer">
+            <div class="total-price">
+                <span>Total:</span>
+                <span id="cartTotal">₹0</span>
+            </div>
+            <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
 
-    function updateFinalAmount() {
-      const final = Math.max(currentTotal - discountApplied, 0);
-      document.getElementById('final-amount').innerText = final.toLocaleString('en-IN');
-      generateUPIQR(final);
-    }
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <h2>Checkout</h2>
+                <i class="fas fa-times" style="cursor:pointer;" onclick="closeCheckout()"></i>
+            </div>
+            
+            <form id="checkoutForm" onsubmit="processOrder(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="custName" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="custPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address & Google Map Link</label>
+                    <textarea id="custAddress" rows="3" placeholder="Flat No, Street, City... (Paste Google Map Link if available)" required></textarea>
+                </div>
 
-    // UPI QR
-    function generateUPIQR(amount) {
-      const qrDiv = document.getElementById('qrcode');
-      if (!qrDiv) return;
-      qrDiv.innerHTML = "";
-      const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=AOSE%20Clothing&am=${amount}&cu=INR&tn=AOSE%20Order`;
-      new QRCode(qrDiv, {
-        text: upiUrl,
-        width: 180,
-        height: 180
-      });
-    }
+                <div class="qr-section">
+                    <p>Scan to Pay: <strong id="payAmount">₹0</strong></p>
+                    <img id="upiQr" src="" alt="UPI QR Code" class="qr-img">
+                    <p style="font-size:0.8rem; color:#666;">UPI ID: 7887731818@ybl</p>
+                    <div class="form-group" style="margin-top:10px;">
+                        <input type="text" id="txnId" placeholder="Enter Transaction ID / UTR" required>
+                    </div>
+                </div>
 
-    // PLACE ORDER – Generate invoice + WhatsApp confirmation
-    async function placeOrder() {
-      if (cart.length === 0) {
-        alert("Your cart is empty.");
-        return;
-      }
-      const name = document.getElementById('cust-name').value.trim();
-      const phone = document.getElementById('cust-phone').value.trim();
-      const email = document.getElementById('cust-email').value.trim();
-      const address = document.getElementById('cust-address').value.trim();
-      const pin = document.getElementById('cust-pin').value.trim();
+                <button type="submit" class="btn-checkout" style="background-color: var(--primary-green); color: white;">Confirm Order via WhatsApp</button>
+            </form>
+        </div>
+    </div>
 
-      if (!name || !phone || !address || !pin) {
-        alert("Please fill all required delivery details.");
-        return;
-      }
+    <script>
+        /* --- CONFIGURATION --- */
+        const UPI_ID = "7887731818@ybl";
+        const WHATSAPP_NUMBER = "917887731818";
+        
+        /* --- PRODUCT DATA (Unlimited products can be added here) --- */
+        const products = [
+            {
+                id: 1,
+                name: "Royal Emerald Shirt",
+                category: "Men",
+                price: 1499,
+                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                name: "Golden Hour Dress",
+                category: "Women",
+                price: 2499,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                name: "Classic Beige Chinos",
+                category: "Men",
+                price: 1299,
+                image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                name: "Silk Scarf",
+                category: "Accessories",
+                price: 799,
+                image: "https://images.unsplash.com/photo-1584030373081-f37b785de728?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 5,
+                name: "Forest Green Blazer",
+                category: "Men",
+                price: 3999,
+                image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+             {
+                id: 6,
+                name: "Velvet Evening Gown",
+                category: "Women",
+                price: 4500,
+                image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
 
-      const finalAmountText = document.getElementById('final-amount').innerText.replace(/,/g,"");
-      const finalAmount = Number(finalAmountText || "0");
+        let cart = [];
 
-      await generateInvoicePDF(name, phone, email, address, pin, finalAmount);
+        /* --- INITIALIZATION --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+        });
 
-      const itemsText = cart.map(i => `${i.name} - ₹${i.price}`).join("%0A");
-      const msg =
-        `New AOSE Order:%0A` +
-        `Name: ${encodeURIComponent(name)}%0A` +
-        `Phone: ${encodeURIComponent(phone)}%0A` +
-        `Email: ${encodeURIComponent(email)}%0A` +
-        `Address: ${encodeURIComponent(address)}%0A` +
-        `Pincode: ${encodeURIComponent(pin)}%0A%0A` +
-        `Items:%0A${itemsText}%0A%0A` +
-        `Final Amount (paid via UPI ${encodeURIComponent(UPI_ID)}): ₹${finalAmount}`;
+        /* --- RENDER PRODUCTS --- */
+        function renderProducts(data) {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+            
+            data.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-price">₹${product.price}</div>
+                        <div class="btn-group">
+                            <button class="btn btn-add" onclick="addToCart(${product.id})">
+                                <i class="fas fa-shopping-cart"></i> Add
+                            </button>
+                            <a href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi, I have an enquiry about ${product.name}" 
+                               target="_blank" class="btn btn-enquiry">
+                                <i class="fab fa-whatsapp"></i> Enquiry
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+        /* --- FILTERS & SEARCH --- */
+        function filterCategory(category, btn) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-      alert("Thank you! Invoice downloaded. A confirmation message is being sent to AOSE on WhatsApp.");
-    }
+            if (category === 'all') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                renderProducts(filtered);
+            }
+        }
 
-    async function generateInvoicePDF(name, phone, email, address, pin, amount) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const orderId = "AOSE-" + Math.floor(1000 + Math.random() * 9000);
-      const date = new Date().toLocaleString("en-IN");
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
 
-      doc.setFont("helvetica","bold");
-      doc.setFontSize(22);
-      doc.setTextColor(0,59,35);
-      doc.text("AOSE CLOTHING", 105, 20, {align:"center"});
+        /* --- CART LOGIC --- */
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existingItem = cart.find(item => item.id === id);
 
-      doc.setFontSize(11);
-      doc.setFont("helvetica","normal");
-      doc.text("Timeless Elegance, Modern Legacy", 105, 27, {align:"center"});
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            toggleCart(true); // Open cart when item added
+        }
 
-      doc.setFontSize(10);
-      doc.setTextColor(0);
-      doc.text(`Invoice No: ${orderId}`, 15, 40);
-      doc.text(`Date: ${date}`, 15, 46);
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
 
-      doc.text("Bill To:", 15, 58);
-      doc.text(name, 15, 64);
-      doc.text(`Phone: ${phone}`, 15, 70);
-      if (email) doc.text(`Email: ${email}`, 15, 76);
-      doc.text(`Address: ${address}`, 15, 82, {maxWidth: 180});
-      doc.text(`Pincode: ${pin}`, 15, 94);
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
 
-      doc.setDrawColor(222,193,117);
-      doc.line(15, 104, 195, 104);
-      doc.text("Item", 18, 110);
-      doc.text("Price (₹)", 170, 110);
-      doc.line(15, 112, 195, 112);
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let count = 0;
 
-      let y = 120;
-      let total = 0;
-      cart.forEach(item => {
-        doc.text(item.name, 18, y);
-        doc.text(String(item.price), 170, y);
-        y += 8;
-        total += item.price;
-      });
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                count += item.quantity;
 
-      doc.line(15, y+2, 195, y+2);
-      doc.setFont("helvetica","bold");
-      doc.text(`Total: ₹${total}`, 150, y+12);
-      doc.text(`Final Amount Paid: ₹${amount}`, 130, y+22);
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small>₹${item.price} x ${item.quantity}</small>
+                    </div>
+                    <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="removeFromCart(${item.id})"></i>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
 
-      doc.setFontSize(9);
-      doc.setFont("helvetica","normal");
-      doc.text("Payment Method: UPI (" + UPI_ID + ")", 15, y+34);
-      doc.text("Thank you for shopping with AOSE Clothing.", 15, y+42);
+            cartCount.innerText = count;
+            cartTotal.innerText = '₹' + total;
+        }
 
-      doc.save(`AOSE_Invoice_${orderId}.pdf`);
-    }
+        function toggleCart(forceOpen = false) {
+            const sidebar = document.getElementById('cartSidebar');
+            if (forceOpen) {
+                sidebar.classList.add('open');
+            } else {
+                sidebar.classList.toggle('open');
+            }
+        }
 
-    // INIT
-    document.getElementById('year').innerText = new Date().getFullYear();
-    renderGrid(products.filter(p => p.featured), 'featured-grid');
-    renderGrid(products, 'main-shop-grid');
-    updateCart();
-    generateUPIQR(0);
-  </script>
+        /* --- CHECKOUT & PAYMENT --- */
+        function openCheckout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            
+            // Calculate Total
+            let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Generate UPI Link for QR
+            // Format: upi://pay?pa=UPI_ID&pn=NAME&am=AMOUNT
+            const upiLink = `upi://pay?pa=${UPI_ID}&pn=AOSE_Clothing&am=${total}&cu=INR`;
+            // Use a QR code API (QuickChart.io is free/reliable)
+            const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}&size=200`;
+
+            document.getElementById('payAmount').innerText = '₹' + total;
+            document.getElementById('upiQr').src = qrUrl;
+
+            toggleCart(); // Close sidebar
+            document.getElementById('checkoutModal').style.display = 'flex';
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
+
+        function processOrder(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const txnId = document.getElementById('txnId').value;
+            
+            let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Construct Message
+            let message = `*NEW ORDER FROM AOSE WEBSITE*\n\n`;
+            message += `*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n`;
+            message += `*Order Items:*\n`;
+            
+            cart.forEach(item => {
+                message += `- ${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}\n`;
+            });
+
+            message += `\n*Total Amount:* ₹${total}\n`;
+            message += `*Payment Info:*\nPaid via UPI\nTxn ID: ${txnId}`;
+
+            // Redirect to WhatsApp
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            
+            // Clear cart
+            cart = [];
+            updateCartUI();
+            closeCheckout();
+            
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('checkoutModal')) {
+                closeCheckout();
+            }
+        }
+    </script>
 </body>
 </html>
