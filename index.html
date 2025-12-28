@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="assets/logo.png">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script> <!-- Replace with your Google Maps API key -->
 </head>
 <body>
     <div class="announcement-bar bg-primary text-white text-center py-2">
@@ -20,10 +21,10 @@
         <div class="container d-flex justify-content-between align-items-center">
             <img src="assets/logo.png" alt="AOSE Logo" height="50">
             <nav class="d-flex gap-3">
-                <a href="index.html" class="text-dark fw-bold">Home</a>
-                <a href="products.html" class="text-dark fw-bold">Products</a>
-                <a href="about.html" class="text-dark fw-bold">About</a>
-                <a href="contact.html" class="text-dark fw-bold">Contact</a>
+                <a href="#home" class="text-dark fw-bold">Home</a>
+                <a href="#products" class="text-dark fw-bold">Products</a>
+                <a href="#about" class="text-dark fw-bold">About</a>
+                <a href="#contact" class="text-dark fw-bold">Contact</a>
             </nav>
             <div class="nav-icons d-flex gap-3">
                 <i class="fas fa-search text-dark" onclick="toggleSearch()"></i>
@@ -38,29 +39,23 @@
         </div>
     </header>
 
-    <section class="hero bg-gradient-primary text-white text-center py-5">
+    <section id="home" class="hero bg-gradient-primary text-white text-center py-5">
         <div class="container">
             <h1 class="display-4 fw-bold">Welcome to AOSE</h1>
             <p class="lead">Premium clothing for every style.</p>
         </div>
     </section>
 
-    <section class="categories py-5 bg-light">
+    <section id="products" class="categories py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-4">Categories</h2>
             <div class="row text-center">
-                <div class="col-md-3"><a href="products.html?category=men" class="btn btn-outline-primary rounded-pill">Men</a></div>
-                <div class="col-md-3"><a href="products.html?category=women" class="btn btn-outline-primary rounded-pill">Women</a></div>
-                <div class="col-md-3"><a href="products.html?category=kids" class="btn btn-outline-primary rounded-pill">Kids</a></div>
-                <div class="col-md-3"><a href="products.html?category=accessories" class="btn btn-outline-primary rounded-pill">Accessories</a></div>
+                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn active" onclick="filterCategory('all', this)">All</button></div>
+                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn" onclick="filterCategory('men', this)">Men</button></div>
+                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn" onclick="filterCategory('women', this)">Women</button></div>
+                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn" onclick="filterCategory('accessories', this)">Accessories</button></div>
             </div>
-        </div>
-    </section>
-
-    <section class="featured-products py-5">
-        <div class="container">
-            <h2 class="text-center mb-4">Featured Products</h2>
-            <div class="row" id="featured-products">
+            <div class="row mt-4" id="featured-products">
                 <!-- Products loaded via JS -->
             </div>
         </div>
@@ -75,7 +70,7 @@
                 <a href="#" class="text-white"><i class="fab fa-facebook"></i></a>
             </div>
             <form class="newsletter d-flex justify-content-center gap-2">
-                <input type="email" placeholder="Subscribe to newsletter" class="form-control w-50">
+                <input type="email" placeholder="Subscribe to newsletter" class="form-control w-50" required>
                 <button class="btn btn-primary">Subscribe</button>
             </form>
         </div>
@@ -124,6 +119,7 @@
                             <label class="form-label">Full Delivery Address</label>
                             <textarea id="custAddress" class="form-control" rows="3" required></textarea>
                         </div>
+                        <div id="map" style="height: 300px; width: 100%; margin-bottom: 15px;"></div> <!-- Google Map -->
                         <div class="text-center bg-light p-3 mb-3 border">
                             <p class="mb-2">Scan to Pay: <strong id="payAmount">₹0</strong></p>
                             <img id="upiQr" src="" width="150" alt="UPI QR">
@@ -131,6 +127,24 @@
                         </div>
                         <button type="submit" class="btn btn-success w-100">Complete Order via WhatsApp</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal (for after payment) -->
+    <div class="modal fade" id="invoiceModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="invoiceDetails">
+                    <!-- Invoice content loaded via JS -->
+                </div>
+                <div class="modal-footer">
+                    <button onclick="window.print()" class="btn btn-primary">Print Invoice</button>
                 </div>
             </div>
         </div>
