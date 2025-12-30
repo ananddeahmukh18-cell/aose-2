@@ -3,74 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSE Clothing | Classic Elegance</title>
+    <title>AOSE Clothing | Timeless Elegance</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- THEME CONFIGURATION (Classic Elegance) --- */
+        /* --- CSS VARIABLES & THEME --- */
         :root {
-            /* Requested Colors */
-            --navy-blue: #2E4053;  /* Primary Background */
-            --classic-gray: #BFC9CA; /* Secondary / Text Support */
-            --bright-gold: #F1C40F; /* Accents / Highlights */
-            
-            /* Functional Colors derived from theme */
-            --text-on-dark: #ECF0F1; /* Slightly lighter than gray for readability */
-            --text-on-light: #2E4053;
-            --card-bg: #FFFFFF;
-            
-            --font-heading: 'Cinzel', serif;
-            --font-body: 'Montserrat', sans-serif;
+            --primary-green: #003B23;
+            --accent-gold: #DEC175;
+            --bg-cream: #ECDFC3;
+            --text-dark: #1a1a1a;
+            --white: #ffffff;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: var(--font-body);
-            background-color: var(--navy-blue);
-            color: var(--classic-gray);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER & NAVIGATION --- */
         header {
-            background-color: #212F3C; /* Slightly darker navy for contrast */
-            padding: 1.5rem 5%;
+            background-color: var(--primary-green);
+            padding: 1rem 5%;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 2px solid var(--bright-gold);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .logo-container {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
         .logo-text {
             font-family: var(--font-heading);
-            font-size: 2.2rem;
-            color: var(--bright-gold);
+            font-size: 2rem;
+            color: var(--accent-gold);
             font-weight: 700;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         .nav-icons {
             display: flex;
-            gap: 25px;
-            color: var(--classic-gray);
-            font-size: 1.4rem;
+            gap: 20px;
+            color: var(--accent-gold);
+            font-size: 1.2rem;
             cursor: pointer;
         }
-        
-        .nav-icons i:hover { color: var(--bright-gold); transition: 0.3s; }
 
         .cart-icon-wrapper {
             position: relative;
@@ -78,147 +70,120 @@
 
         .cart-count {
             position: absolute;
-            top: -5px;
+            top: -8px;
             right: -8px;
-            background-color: var(--bright-gold);
-            color: var(--navy-blue);
-            font-size: 0.75rem;
-            font-weight: 800;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: var(--accent-gold);
+            color: var(--primary-green);
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
             border-radius: 50%;
         }
 
         /* --- HERO SECTION --- */
         .hero {
             text-align: center;
-            padding: 6rem 1rem;
-            /* Overlay with Navy Blue tint */
-            background: linear-gradient(rgba(46, 64, 83, 0.8), rgba(46, 64, 83, 0.9)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            padding: 4rem 1rem;
+            background: linear-gradient(rgba(0,59,35,0.8), rgba(0,59,35,0.8)), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
             background-size: cover;
-            background-attachment: fixed;
             background-position: center;
-            border-bottom: 1px solid var(--classic-gray);
+            color: var(--bg-cream);
         }
 
         .hero h1 {
             font-family: var(--font-heading);
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
-            color: var(--bright-gold);
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            color: var(--accent-gold);
         }
 
         .hero p {
             font-size: 1.2rem;
-            color: var(--classic-gray);
-            letter-spacing: 2px;
-            max-width: 600px;
-            margin: 0 auto;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
         }
 
-        /* --- CONTROLS --- */
+        /* --- CONTROLS (Search & Filter) --- */
         .controls {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 20px;
-            padding: 3rem 5%;
-            background-color: var(--navy-blue);
+            gap: 15px;
+            padding: 2rem 5%;
         }
 
         .search-bar {
-            padding: 12px 20px;
-            border: 2px solid var(--classic-gray);
-            border-radius: 0;
+            padding: 10px 15px;
+            border: 2px solid var(--primary-green);
+            border-radius: 30px;
             width: 300px;
-            background: rgba(255,255,255,0.05);
-            color: var(--bright-gold);
+            background: transparent;
             outline: none;
-            font-family: var(--font-body);
-            transition: 0.3s;
         }
-        
-        .search-bar:focus { border-color: var(--bright-gold); }
-        .search-bar::placeholder { color: var(--classic-gray); opacity: 0.7; }
 
         .filter-btn {
-            padding: 12px 25px;
+            padding: 10px 20px;
             background-color: transparent;
-            border: 2px solid var(--classic-gray);
-            color: var(--classic-gray);
+            border: 1px solid var(--primary-green);
+            color: var(--primary-green);
             cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            transition: 0.4s;
-            font-weight: 600;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-weight: bold;
         }
 
         .filter-btn.active, .filter-btn:hover {
-            background-color: var(--bright-gold);
-            border-color: var(--bright-gold);
-            color: var(--navy-blue);
-            box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+            background-color: var(--primary-green);
+            color: var(--accent-gold);
         }
 
         /* --- PRODUCT GRID --- */
         .products-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2.5rem;
-            padding: 0 5% 5rem 5%;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 5% 4rem 5%;
         }
 
         .product-card {
-            background: var(--card-bg);
-            border: 1px solid var(--classic-gray);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
             display: flex;
             flex-direction: column;
-            position: relative;
-            border-radius: 4px;
         }
 
         .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-color: var(--bright-gold);
+            transform: translateY(-5px);
         }
 
         .product-img {
             width: 100%;
-            height: 350px;
+            height: 300px;
             object-fit: cover;
-            border-bottom: 1px solid #eee;
+            background-color: #f0f0f0;
         }
 
         .product-info {
             padding: 1.5rem;
-            text-align: center;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            color: var(--text-on-light);
         }
 
         .product-title {
             font-family: var(--font-heading);
-            font-size: 1.3rem;
-            color: var(--navy-blue);
+            font-size: 1.2rem;
+            color: var(--primary-green);
             margin-bottom: 0.5rem;
-            font-weight: 700;
         }
 
         .product-price {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
         }
 
         .btn-group {
@@ -229,55 +194,45 @@
 
         .btn {
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             border: none;
             cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-size: 0.9rem;
             transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
+            border-radius: 5px;
         }
 
         .btn-add {
-            background-color: var(--navy-blue);
-            color: var(--bright-gold);
+            background-color: var(--primary-green);
+            color: var(--accent-gold);
         }
         
-        .btn-add:hover {
-            background-color: var(--bright-gold);
-            color: var(--navy-blue);
-        }
+        .btn-add:hover { background-color: #002a19; }
 
         .btn-enquiry {
-            background-color: transparent;
-            color: var(--navy-blue);
-            border: 1px solid var(--navy-blue);
+            background-color: #25D366; /* WhatsApp Color */
+            color: white;
             text-decoration: none;
-        }
-        
-        .btn-enquiry:hover {
-            background-color: #f0f0f0;
         }
 
         /* --- CART SIDEBAR --- */
         .cart-sidebar {
             position: fixed;
             top: 0;
-            right: -450px;
-            width: 400px;
+            right: -400px;
+            width: 350px;
             height: 100%;
-            background: #1C2833; /* Darker navy/black */
-            color: var(--text-on-dark);
-            border-left: 2px solid var(--bright-gold);
+            background: var(--white);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
             z-index: 2000;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.3s;
             display: flex;
             flex-direction: column;
-            padding: 30px;
+            padding: 20px;
         }
 
         .cart-sidebar.open { right: 0; }
@@ -286,51 +241,46 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--classic-gray);
-            padding-bottom: 20px;
-            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
         }
 
-        .cart-header h2 { font-family: var(--font-heading); color: var(--bright-gold); }
-
-        .cart-items { flex-grow: 1; overflow-y: auto; }
+        .cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
 
         .cart-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: rgba(255,255,255,0.05);
             margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 4px;
-            border: 1px solid rgba(191, 201, 202, 0.2);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
         }
 
-        .cart-footer { border-top: 1px solid var(--classic-gray); padding-top: 20px; }
+        .cart-footer {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
 
         .total-price {
-            font-family: var(--font-heading);
-            font-size: 1.4rem;
-            color: var(--bright-gold);
+            font-size: 1.2rem;
+            font-weight: bold;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .btn-checkout {
             width: 100%;
-            padding: 15px;
-            background-color: var(--bright-gold);
-            color: var(--navy-blue);
-            font-weight: 800;
+            padding: 12px;
+            background-color: var(--accent-gold);
+            color: var(--primary-green);
+            font-weight: bold;
             border: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             cursor: pointer;
-            transition: 0.3s;
         }
-        
-        .btn-checkout:hover { background-color: #D4AC0D; }
 
         /* --- CHECKOUT MODAL --- */
         .modal {
@@ -340,67 +290,71 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(28, 40, 51, 0.9);
+            background: rgba(0,0,0,0.6);
             z-index: 3000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background: #F4F6F6; /* Very light gray */
-            color: var(--navy-blue);
-            padding: 2.5rem;
+            background: var(--white);
+            padding: 2rem;
             width: 90%;
-            max-width: 550px;
-            border: 2px solid var(--bright-gold);
+            max-width: 500px;
+            border-radius: 10px;
             max-height: 90vh;
             overflow-y: auto;
-            position: relative;
-            border-radius: 8px;
         }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
         .form-group input, .form-group textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #BDC3C7;
-            background: white;
-            color: #333;
-            font-family: var(--font-body);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .qr-section {
             text-align: center;
-            margin: 25px 0;
-            padding: 20px;
-            background: white;
-            border: 2px dashed var(--navy-blue);
-            border-radius: 4px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px dashed var(--primary-green);
         }
-        
-        .qr-img { mix-blend-mode: multiply; }
+
+        .qr-img {
+            max-width: 200px;
+            margin: 10px 0;
+        }
 
         /* --- FOOTER --- */
         footer {
-            background-color: #17202A; /* Almost black */
-            color: var(--classic-gray);
+            background-color: var(--primary-green);
+            color: var(--accent-gold);
             text-align: center;
-            padding: 4rem 1rem;
-            border-top: 1px solid var(--bright-gold);
+            padding: 2rem;
+            margin-top: 2rem;
         }
         
-        .social-icons { margin: 2rem 0; font-size: 1.8rem; }
-        .social-icons i { margin: 0 15px; cursor: pointer; transition: 0.3s; color: var(--classic-gray); }
-        .social-icons i:hover { color: var(--bright-gold); }
+        .social-icons {
+            margin: 1rem 0;
+            font-size: 1.5rem;
+        }
+        .social-icons i { margin: 0 10px; cursor: pointer; }
 
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .cart-sidebar { width: 100%; right: -100%; }
-            .controls { gap: 10px; }
-            .search-bar { width: 100%; }
         }
     </style>
 </head>
@@ -420,12 +374,12 @@
     </header>
 
     <section class="hero">
-        <h1>Timeless & Classic</h1>
-        <p>Elegance redefined for the modern individual.</p>
+        <h1>Timeless Elegance, Modern Legacy</h1>
+        <p>Discover the finest collection curated for the distinguished.</p>
     </section>
 
     <section class="controls">
-        <input type="text" class="search-bar" id="searchInput" placeholder="Search Collection..." onkeyup="filterProducts()">
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
         <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
         <button class="filter-btn" onclick="filterCategory('Men', this)">Men</button>
         <button class="filter-btn" onclick="filterCategory('Women', this)">Women</button>
@@ -436,37 +390,36 @@
         </section>
 
     <footer>
-        <div class="logo-text" style="font-size: 2rem;">AOSE</div>
-        <p style="margin-top:10px; color:var(--classic-gray); font-size:0.9rem;">Classic Elegance, Modern Legacy</p>
+        <div class="logo-text" style="font-size: 1.5rem;">AOSE</div>
         <div class="social-icons">
             <i class="fab fa-instagram"></i>
-            <i class="fab fa-facebook-f"></i>
-            <i class="fab fa-pinterest"></i>
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-twitter"></i>
         </div>
-        <p style="font-size:0.8rem; opacity:0.7;">&copy; 2024 AOSE Clothing. All rights reserved.</p>
+        <p>&copy; 2024 AOSE Clothing. All rights reserved.</p>
     </footer>
 
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h2>Shopping Bag</h2>
-            <i class="fas fa-times" style="cursor:pointer; color:#fff;" onclick="toggleCart()"></i>
+            <h2>Your Cart</h2>
+            <i class="fas fa-times" style="cursor:pointer;" onclick="toggleCart()"></i>
         </div>
         <div class="cart-items" id="cartItems">
             </div>
         <div class="cart-footer">
             <div class="total-price">
-                <span>Total</span>
+                <span>Total:</span>
                 <span id="cartTotal">₹0</span>
             </div>
-            <button class="btn-checkout" onclick="openCheckout()">Checkout Now</button>
+            <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout</button>
         </div>
     </div>
 
     <div class="modal" id="checkoutModal">
         <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid #ddd; padding-bottom:10px;">
-                <h2 style="font-family:var(--font-heading); color:var(--navy-blue);">Confirm Order</h2>
-                <i class="fas fa-times" style="cursor:pointer; font-size:1.2rem; color:var(--navy-blue);" onclick="closeCheckout()"></i>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <h2>Checkout</h2>
+                <i class="fas fa-times" style="cursor:pointer;" onclick="closeCheckout()"></i>
             </div>
             
             <form id="checkoutForm" onsubmit="processOrder(event)">
@@ -479,22 +432,20 @@
                     <input type="tel" id="custPhone" required>
                 </div>
                 <div class="form-group">
-                    <label>Delivery Address / Google Map Link</label>
-                    <textarea id="custAddress" rows="3" placeholder="Paste Map Link or Full Address here..." required></textarea>
+                    <label>Delivery Address & Google Map Link</label>
+                    <textarea id="custAddress" rows="3" placeholder="Flat No, Street, City... (Paste Google Map Link if available)" required></textarea>
                 </div>
 
                 <div class="qr-section">
-                    <p style="font-weight:bold; margin-bottom:10px; color:var(--navy-blue);">Scan to Pay: <span id="payAmount" style="color:var(--bright-gold); font-size:1.4rem;">₹0</span></p>
-                    <img id="upiQr" src="" alt="UPI QR Code" class="qr-img" width="180">
-                    <p style="font-size:0.8rem; color:#555; margin-top:5px;">UPI ID: <strong>7887731818@ybl</strong></p>
-                    <div class="form-group" style="margin-top:15px;">
-                        <input type="text" id="txnId" placeholder="Enter Payment Reference / UTR ID" required>
+                    <p>Scan to Pay: <strong id="payAmount">₹0</strong></p>
+                    <img id="upiQr" src="" alt="UPI QR Code" class="qr-img">
+                    <p style="font-size:0.8rem; color:#666;">UPI ID: 7887731818@ybl</p>
+                    <div class="form-group" style="margin-top:10px;">
+                        <input type="text" id="txnId" placeholder="Enter Transaction ID / UTR" required>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-checkout" style="background-color: var(--navy-blue); color: var(--bright-gold);">
-                    <i class="fab fa-whatsapp"></i> Send Order via WhatsApp
-                </button>
+                <button type="submit" class="btn-checkout" style="background-color: var(--primary-green); color: white;">Confirm Order via WhatsApp</button>
             </form>
         </div>
     </div>
@@ -504,46 +455,46 @@
         const UPI_ID = "7887731818@ybl";
         const WHATSAPP_NUMBER = "917887731818";
         
-        /* --- PRODUCT DATA --- */
+        /* --- PRODUCT DATA (Unlimited products can be added here) --- */
         const products = [
             {
                 id: 1,
-                name: "Royal Navy Shirt",
+                name: "Royal Emerald Shirt",
                 category: "Men",
                 price: 1499,
                 image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 2,
-                name: "Golden Hour Evening Dress",
+                name: "Golden Hour Dress",
                 category: "Women",
                 price: 2499,
                 image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 3,
-                name: "Classic Grey Chinos",
+                name: "Classic Beige Chinos",
                 category: "Men",
                 price: 1299,
                 image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 4,
-                name: "Pure Silk Scarf",
+                name: "Silk Scarf",
                 category: "Accessories",
                 price: 799,
                 image: "https://images.unsplash.com/photo-1584030373081-f37b785de728?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 5,
-                name: "Deep Blue Blazer",
+                name: "Forest Green Blazer",
                 category: "Men",
                 price: 3999,
                 image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
             },
              {
                 id: 6,
-                name: "Velvet Noir Gown",
+                name: "Velvet Evening Gown",
                 category: "Women",
                 price: 4500,
                 image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
@@ -557,7 +508,7 @@
             renderProducts(products);
         });
 
-        /* --- RENDER LOGIC --- */
+        /* --- RENDER PRODUCTS --- */
         function renderProducts(data) {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
@@ -572,11 +523,11 @@
                         <div class="product-price">₹${product.price}</div>
                         <div class="btn-group">
                             <button class="btn btn-add" onclick="addToCart(${product.id})">
-                                <i class="fas fa-cart-plus"></i> Add
+                                <i class="fas fa-shopping-cart"></i> Add
                             </button>
                             <a href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi, I have an enquiry about ${product.name}" 
                                target="_blank" class="btn btn-enquiry">
-                                <i class="fab fa-whatsapp"></i> Ask
+                                <i class="fab fa-whatsapp"></i> Enquiry
                             </a>
                         </div>
                     </div>
@@ -585,8 +536,9 @@
             });
         }
 
-        /* --- FILTER LOGIC --- */
+        /* --- FILTERS & SEARCH --- */
         function filterCategory(category, btn) {
+            // Update active button
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
@@ -615,7 +567,7 @@
                 cart.push({ ...product, quantity: 1 });
             }
             updateCartUI();
-            toggleCart(true); 
+            toggleCart(true); // Open cart when item added
         }
 
         function removeFromCart(id) {
@@ -640,10 +592,10 @@
                 itemDiv.className = 'cart-item';
                 itemDiv.innerHTML = `
                     <div>
-                        <div style="font-weight:bold; color:var(--bright-gold);">${item.name}</div>
-                        <small style="color:#aaa;">₹${item.price} x ${item.quantity}</small>
+                        <strong>${item.name}</strong><br>
+                        <small>₹${item.price} x ${item.quantity}</small>
                     </div>
-                    <i class="fas fa-trash" style="color:#d9534f; cursor:pointer;" onclick="removeFromCart(${item.id})"></i>
+                    <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="removeFromCart(${item.id})"></i>
                 `;
                 cartItemsContainer.appendChild(itemDiv);
             });
@@ -661,23 +613,26 @@
             }
         }
 
-        /* --- CHECKOUT LOGIC --- */
+        /* --- CHECKOUT & PAYMENT --- */
         function openCheckout() {
             if (cart.length === 0) {
-                alert("Your bag is empty.");
+                alert("Your cart is empty!");
                 return;
             }
             
+            // Calculate Total
             let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // Dynamic UPI Link
+            // Generate UPI Link for QR
+            // Format: upi://pay?pa=UPI_ID&pn=NAME&am=AMOUNT
             const upiLink = `upi://pay?pa=${UPI_ID}&pn=AOSE_Clothing&am=${total}&cu=INR`;
+            // Use a QR code API (QuickChart.io is free/reliable)
             const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}&size=200`;
 
             document.getElementById('payAmount').innerText = '₹' + total;
             document.getElementById('upiQr').src = qrUrl;
 
-            toggleCart(); 
+            toggleCart(); // Close sidebar
             document.getElementById('checkoutModal').style.display = 'flex';
         }
 
@@ -695,21 +650,22 @@
             
             let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-            // WhatsApp Invoice Message
-            let message = `*🏛️ AOSE LUXURY ORDER 🏛️*\n\n`;
-            message += `*Customer Details:*\n👤 Name: ${name}\n📞 Phone: ${phone}\n📍 Address: ${address}\n\n`;
-            message += `*Order Summary:*\n`;
+            // Construct Message
+            let message = `*NEW ORDER FROM AOSE WEBSITE*\n\n`;
+            message += `*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n`;
+            message += `*Order Items:*\n`;
             
             cart.forEach(item => {
-                message += `• ${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}\n`;
+                message += `- ${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}\n`;
             });
 
-            message += `\n*💰 Total Amount:* ₹${total}\n`;
-            message += `*✅ Payment Status:* PAID\n*🆔 Txn ID:* ${txnId}\n\n`;
-            message += `_Please confirm shipping timeline._`;
+            message += `\n*Total Amount:* ₹${total}\n`;
+            message += `*Payment Info:*\nPaid via UPI\nTxn ID: ${txnId}`;
 
+            // Redirect to WhatsApp
             const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
             
+            // Clear cart
             cart = [];
             updateCartUI();
             closeCheckout();
@@ -717,6 +673,7 @@
             window.open(whatsappUrl, '_blank');
         }
 
+        // Close modal if clicked outside
         window.onclick = function(event) {
             if (event.target == document.getElementById('checkoutModal')) {
                 closeCheckout();
