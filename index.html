@@ -3,157 +3,452 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSE Clothing - Premium Fashion</title>
-    <meta name="description" content="Discover premium clothing at AOSE. Shop trendy tees, hoodies, and more with exclusive discounts.">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>AOSE CLOTHING | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="assets/logo.png">
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script> <!-- Replace with your Google Maps API key -->
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- AOSE.IN OFFICIAL THEME --- */
+        :root {
+            --bg-white: #ffffff;
+            --text-black: #000000;
+            --accent-gray: #f4f4f4;
+            --border-light: #e8e8e8;
+            --sale-red: #d0021b;
+            --font-main: 'Assistant', sans-serif;
+            --font-logo: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-white);
+            color: var(--text-black);
+            line-height: 1.5;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--bg-white);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-family: var(--font-logo);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .nav-icons i:hover { opacity: 0.6; }
+
+        .cart-icon-wrapper { position: relative; }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--text-black);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        /* --- ANNOUNCEMENT BAR --- */
+        .announcement {
+            background-color: var(--text-black);
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* --- PRODUCT GRID --- */
+        .container { padding: 2rem 5%; }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .product-img-container {
+            position: relative;
+            overflow: hidden;
+            background: var(--accent-gray);
+            aspect-ratio: 3/4;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img { transform: scale(1.05); }
+
+        .sale-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--sale-red);
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .product-info {
+            padding: 1rem 0;
+            text-align: left;
+        }
+
+        .product-name {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.85rem;
+            margin-right: 8px;
+        }
+
+        .btn-add-main {
+            width: 100%;
+            padding: 12px;
+            background: var(--text-black);
+            color: white;
+            border: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-add-main:hover { opacity: 0.8; }
+
+        /* --- CART SIDEBAR --- */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 2000;
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+        }
+
+        .cart-sidebar.open { right: 0; }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 15px;
+        }
+
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px 0; }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 15px;
+        }
+
+        .cart-item img { width: 70px; height: 90px; object-fit: cover; }
+
+        .btn-checkout {
+            background: var(--text-black);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--border-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-sidebar { width: 100%; }
+            .products-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .container { padding: 1rem; }
+        }
+    </style>
 </head>
 <body>
-    <div class="announcement-bar bg-primary text-white text-center py-2">
-        <p class="mb-0">Use Discount Code for 30% OFF Now</p>
-    </div>
 
-    <header class="bg-white shadow-sm py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <img src="assets/logo.png" alt="AOSE Logo" height="50">
-            <nav class="d-flex gap-3">
-                <a href="#home" class="text-dark fw-bold">Home</a>
-                <a href="#products" class="text-dark fw-bold">Products</a>
-                <a href="#about" class="text-dark fw-bold">About</a>
-                <a href="#contact" class="text-dark fw-bold">Contact</a>
-            </nav>
-            <div class="nav-icons d-flex gap-3">
-                <i class="fas fa-search text-dark" onclick="toggleSearch()"></i>
-                <div class="cart-icon-wrapper position-relative" onclick="toggleCart()">
-                    <i class="fas fa-shopping-bag text-dark"></i>
-                    <span class="cart-count badge bg-secondary text-dark position-absolute top-0 end-0">0</span>
-                </div>
+    <div class="announcement">Use Discount Code for 30% OFF Now</div>
+
+    <header>
+        <div class="logo-text">AOSE CLOTHING</div>
+        <div class="nav-icons">
+            <i class="fas fa-search"></i>
+            <div class="cart-icon-wrapper" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cartCount">0</span>
             </div>
-        </div>
-        <div id="search-bar" class="d-none mt-3">
-            <input type="text" id="search-input" placeholder="Search products..." class="form-control">
         </div>
     </header>
 
-    <section id="home" class="hero bg-gradient-primary text-white text-center py-5">
-        <div class="container">
-            <h1 class="display-4 fw-bold">Welcome to AOSE</h1>
-            <p class="lead">Premium clothing for every style.</p>
-        </div>
-    </section>
+    <div class="container">
+        <h2 class="section-title">Shop All</h2>
+        <div class="products-grid" id="productsContainer">
+            </div>
+    </div>
 
-    <section id="products" class="categories py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-4">Categories</h2>
-            <div class="row text-center">
-                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn active" onclick="filterCategory('all', this)">All</button></div>
-                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn" onclick="filterCategory('men', this)">Men</button></div>
-                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn" onclick="filterCategory('women', this)">Women</button></div>
-                <div class="col-md-3"><button class="btn btn-outline-primary rounded-pill filter-btn" onclick="filterCategory('accessories', this)">Accessories</button></div>
-            </div>
-            <div class="row mt-4" id="featured-products">
-                <!-- Products loaded via JS -->
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-dark text-white py-4 text-center">
-        <div class="container">
-            <img src="assets/logo.png" alt="AOSE Logo" height="40" class="mb-3">
-            <p>&copy; 2023 AOSE. All rights reserved.</p>
-            <div class="d-flex justify-content-center gap-3 mb-3">
-                <a href="https://www.instagram.com/official_aose?igsh=MThlcDhqanBwdjdlaw%3D%3D&utm_source=qr" class="text-white"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-white"><i class="fab fa-facebook"></i></a>
-            </div>
-            <form class="newsletter d-flex justify-content-center gap-2">
-                <input type="email" placeholder="Subscribe to newsletter" class="form-control w-50" required>
-                <button class="btn btn-primary">Subscribe</button>
-            </form>
+    <footer style="padding: 4rem 5%; border-top: 1px solid var(--border-light); text-align: center; background: #fff;">
+        <div class="logo-text" style="margin-bottom: 1rem;">AOSE</div>
+        <p style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">© 2025, AOSE CLOTHING. All Rights Reserved.</p>
+        <div class="nav-icons" style="justify-content: center;">
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-facebook"></i>
         </div>
     </footer>
 
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/917887731818" class="whatsapp-float position-fixed bottom-0 end-0 m-3" target="_blank">
-        <i class="fab fa-whatsapp fa-2x text-white bg-success rounded-circle p-2"></i>
-    </a>
-
-    <!-- Cart Sidebar -->
-    <div class="cart-sidebar position-fixed top-0 end-0 bg-white shadow-lg" id="cartSidebar">
-        <div class="cart-header d-flex justify-content-between align-items-center p-3 border-bottom">
-            <h3 class="mb-0">Your Cart</h3>
-            <i class="fas fa-times" onclick="toggleCart()"></i>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer;"></i>
         </div>
-        <div class="cart-items flex-grow-1 p-3 overflow-auto" id="cartItems"></div>
-        <div class="p-3 border-top">
-            <div class="d-flex justify-content-between mb-3 fw-bold">
+        <div class="cart-items" id="cartItems"></div>
+        <div style="border-top: 1px solid var(--border-light); padding-top: 15px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700;">
                 <span>Subtotal</span>
-                <span id="cartTotal">₹0.00</span>
+                <span id="cartTotal">Rs. 0.00</span>
             </div>
-            <button class="btn btn-primary w-100" onclick="openCheckout()">Checkout</button>
+            <button class="btn-checkout" onclick="openCheckout()">Checkout</button>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
-    <div class="modal fade" id="checkoutModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Shipping Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <h3>Shipping Details</h3>
+            <form onsubmit="processOrder(event)">
+                <input type="text" id="custName" placeholder="Full Name" required>
+                <input type="tel" id="custPhone" placeholder="Phone Number" required>
+                <textarea id="custAddress" placeholder="Full Delivery Address" rows="3" required></textarea>
+                
+                <div style="text-align: center; background: #f9f9f9; padding: 15px; margin: 15px 0; border: 1px dashed #ccc;">
+                    <p style="font-size: 0.8rem; margin-bottom: 10px;">Scan to Pay: <strong id="payAmount">Rs. 0</strong></p>
+                    <img id="upiQr" src="" width="150" style="mix-blend-mode: multiply;">
+                    <input type="text" id="txnId" placeholder="Enter Transaction ID" required>
                 </div>
-                <div class="modal-body">
-                    <form id="checkoutForm">
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" id="custName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Phone Number</label>
-                            <input type="tel" id="custPhone" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Full Delivery Address</label>
-                            <textarea id="custAddress" class="form-control" rows="3" required></textarea>
-                        </div>
-                        <div id="map" style="height: 300px; width: 100%; margin-bottom: 15px;"></div> <!-- Google Map -->
-                        <div class="text-center bg-light p-3 mb-3 border">
-                            <p class="mb-2">Scan to Pay: <strong id="payAmount">₹0</strong></p>
-                            <img id="upiQr" src="" width="150" alt="UPI QR">
-                            <input type="text" id="txnId" class="form-control mt-2" placeholder="Enter Transaction ID" required>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">Complete Order via WhatsApp</button>
-                    </form>
-                </div>
-            </div>
+                
+                <button type="submit" class="btn-checkout">Complete Order via WhatsApp</button>
+                <button type="button" onclick="closeCheckout()" style="width:100%; border:none; background:none; margin-top:10px; cursor:pointer;">Cancel</button>
+            </form>
         </div>
     </div>
 
-    <!-- Invoice Modal (for after payment) -->
-    <div class="modal fade" id="invoiceModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Invoice</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="invoiceDetails">
-                    <!-- Invoice content loaded via JS -->
-                </div>
-                <div class="modal-footer">
-                    <button onclick="window.print()" class="btn btn-primary">Print Invoice</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        const UPI_ID = "7887731818@ybl";
+        const WHATSAPP_NUMBER = "917887731818";
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/products.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/main.js"></script>
+        const products = [
+            {
+                id: 1,
+                name: 'AOSE "Trust The Timing" Artistic Graphic Tee',
+                price: 350,
+                oldPrice: 599,
+                image: 'https://aose.in/cdn/shop/files/AOSE_TEE_1.jpg?v=1710000000' // Placeholder for actual store images
+            },
+            {
+                id: 2,
+                name: 'Heavy Buffal Fabric Printed Oversize T-Shirt',
+                price: 350,
+                oldPrice: 599,
+                image: 'https://aose.in/cdn/shop/files/AOSE_TEE_2.jpg?v=1710000000'
+            },
+            {
+                id: 3,
+                name: 'Los Angeles / California Printed T-Shirt Set',
+                price: 350,
+                oldPrice: 599,
+                image: 'https://aose.in/cdn/shop/files/AOSE_TEE_3.jpg?v=1710000000'
+            }
+        ];
+
+        let cart = [];
+
+        function renderProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <div class="product-img-container">
+                        <div class="sale-badge">Sale</div>
+                        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000&auto=format&fit=crop" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-price">
+                            <span class="old-price">Rs. ${p.oldPrice}.00</span>
+                            Rs. ${p.price}.00
+                        </div>
+                        <button class="btn-add-main" onclick="addToCart(${p.id})">Add to cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cartItems');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            document.getElementById('cartCount').innerText = cart.length;
+            document.getElementById('cartTotal').innerText = `Rs. ${total}.00`;
+            
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000&auto=format&fit=crop">
+                    <div style="flex:1">
+                        <div style="font-size:0.9rem; font-weight:600;">${item.name}</div>
+                        <div style="font-size:0.8rem;">Rs. ${item.price}.00</div>
+                    </div>
+                    <i class="fas fa-trash" style="font-size:0.8rem; cursor:pointer;" onclick="removeFromCart(${index})"></i>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart(open = null) {
+            const sidebar = document.getElementById('cartSidebar');
+            if (open === true) sidebar.classList.add('open');
+            else if (open === false) sidebar.classList.remove('open');
+            else sidebar.classList.toggle('open');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) return alert("Cart is empty");
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('payAmount').innerText = `Rs. ${total}`;
+            const upiLink = `upi://pay?pa=${UPI_ID}&pn=AOSE&am=${total}&cu=INR`;
+            document.getElementById('upiQr').src = `https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}&size=150`;
+            
+            toggleCart(false);
+            document.getElementById('checkoutModal').style.display = 'flex';
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
+
+        function processOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const tid = document.getElementById('txnId').value;
+            
+            let itemsText = cart.map(i => `- ${i.name} (Rs. ${i.price})`).join('\n');
+            let total = cart.reduce((sum, item) => sum + item.price, 0);
+
+            let msg = `*NEW ORDER - AOSE CLOTHING*\n\n`;
+            msg += `*Customer:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n`;
+            msg += `*Items:*\n${itemsText}\n\n`;
+            msg += `*Total:* Rs. ${total}\n*Transaction ID:* ${tid}`;
+
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+            cart = [];
+            updateCartUI();
+            closeCheckout();
+        }
+
+        renderProducts();
+    </script>
 </body>
 </html>
