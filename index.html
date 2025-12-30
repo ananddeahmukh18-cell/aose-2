@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AOSE | The Unlimited Collection</title>
-    <meta name="description" content="AOSE - The Unlimited Collection. Premium Luxury Wear.">
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
         :root {
@@ -25,6 +25,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
         body { font-family: var(--font-main); color: var(--text-dark); background-color: var(--bg-lux); line-height: 1.6; overflow-x: hidden; }
         
+        /* Navigation */
         header {
             position: sticky; top: 0; z-index: 1000; background: rgba(238, 224, 196, 0.95);
             backdrop-filter: blur(15px); padding: 10px 5%; display: flex; 
@@ -38,9 +39,8 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
         }
-
-        .nav-tools { display: flex; gap: 20px; align-items: center; }
-        .track-btn { font-size: 0.7rem; font-weight: 700; cursor: pointer; border: 1px solid var(--primary); padding: 5px 10px; transition: 0.3s; }
+        .nav-tools { display: flex; gap: 15px; align-items: center; }
+        .track-btn { font-size: 0.65rem; font-weight: 700; cursor: pointer; border: 1px solid var(--primary); padding: 5px 12px; transition: 0.3s; letter-spacing: 1px; }
         .track-btn:hover { background: var(--primary); color: white; }
 
         .cart-icon { position: relative; cursor: pointer; font-size: 1.3rem; color: var(--primary); }
@@ -51,49 +51,51 @@
             font-weight: 600; border: 2px solid var(--bg-lux);
         }
 
-        .hero { height: 65vh; background: #000; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-        .hero video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; opacity: 0.5; }
+        /* Hero & Content */
+        .hero { height: 60vh; background: #000; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        .hero video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; opacity: 0.4; }
         .hero-content { z-index: 5; color: #fff; }
-        .hero-content h1 { font-family: var(--font-head); font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: 4px; }
+        .hero-content h1 { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 4px; margin-bottom: 10px; }
+        .hero-content p { font-size: 0.8rem; letter-spacing: 5px; color: var(--accent); text-transform: uppercase; }
 
-        .shop-controls { padding: 40px 5%; display: flex; flex-direction: column; gap: 20px; }
+        .shop-controls { padding: 30px 5%; display: flex; flex-direction: column; gap: 20px; }
         .category-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; }
-        .cat-btn { white-space: nowrap; padding: 10px 25px; border: 1px solid var(--border); background: rgba(255,255,255,0.4); cursor: pointer; font-weight: 600; font-size: 0.75rem; }
+        .cat-btn { white-space: nowrap; padding: 10px 25px; border: 1px solid var(--border); background: rgba(255,255,255,0.4); cursor: pointer; font-weight: 600; font-size: 0.7rem; }
         .cat-btn.active { background: var(--primary); color: #fff; }
 
-        .search-bar { width: 100%; max-width: 400px; position: relative; }
-        .search-bar input { width: 100%; padding: 12px 45px; border: 1px solid var(--border); background: white; border-radius: 4px; }
-        .search-bar i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--primary); }
-
+        /* Product Grid */
         .main-container { padding: 0 5% 60px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; }
-        .product-card { transition: 0.4s; }
-        .p-image { height: 400px; background: #dcd0b8; overflow: hidden; position: relative; cursor: pointer;}
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; }
+        .product-card { background: transparent; transition: 0.4s; }
+        .p-image { height: 400px; background: #dcd0b8; overflow: hidden; position: relative; cursor: pointer; }
         .p-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        .product-card:hover .p-image img { transform: scale(1.08); }
+        .product-card:hover .p-image img { transform: scale(1.05); }
 
         .p-info { padding: 20px; text-align: center; }
-        .p-price { color: var(--primary); font-weight: 700; font-size: 1.2rem; margin-bottom: 15px; }
-
+        .p-price { color: var(--primary); font-weight: 700; font-size: 1.1rem; margin: 10px 0; }
         .size-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .s-box { width: 40px; height: 40px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
-        .s-box.active { background: var(--primary); color: #fff; transform: scale(1.1); }
+        .s-box { width: 38px; height: 38px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+        .s-box.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        .add-to-cart { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; text-transform: uppercase; font-weight: 600; cursor: pointer; letter-spacing: 2px; }
+        .add-to-cart { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; text-transform: uppercase; font-weight: 600; cursor: pointer; letter-spacing: 1.5px; font-size: 0.8rem; }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: var(--bg-lux); width: 100%; max-width: 500px; padding: 40px; position: relative; }
+        /* Modals & Sidebar */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-box { background: var(--bg-lux); width: 100%; max-width: 450px; padding: 40px; position: relative; border: 1px solid var(--accent); }
         
-        .sidebar { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: white; z-index: 2001; transition: 0.5s; display: flex; flex-direction: column; }
+        .sidebar { position: fixed; top: 0; right: -100%; width: 380px; height: 100vh; background: white; z-index: 2001; transition: 0.5s; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
         .sidebar.active { right: 0; }
-        
-        /* Tracking Steps CSS */
-        .track-status { margin-top: 20px; text-align: left; border-left: 2px dashed var(--accent); padding-left: 20px; }
-        .track-step { margin-bottom: 15px; position: relative; }
-        .track-step.active { color: var(--primary); font-weight: 700; }
-        .track-step::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: #ccc; border-radius: 50%; }
-        .track-step.active::before { background: var(--primary); box-shadow: 0 0 5px var(--primary); }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 2000; display: none; }
 
+        /* Tracking Logic Styles */
+        .track-status { margin-top: 25px; text-align: left; border-left: 2px solid #ddd; padding-left: 25px; position: relative; }
+        .track-step { margin-bottom: 20px; position: relative; font-size: 0.85rem; color: #888; }
+        .track-step.active { color: var(--primary); font-weight: 700; }
+        .track-step::before { content: ''; position: absolute; left: -31px; top: 5px; width: 10px; height: 10px; background: #ccc; border-radius: 50%; border: 2px solid #fff; }
+        .track-step.active::before { background: var(--primary); box-shadow: 0 0 8px var(--primary); }
+
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; background: #fff; font-family: var(--font-main); }
+        
         @media (max-width: 768px) { .sidebar { width: 100%; } .brand-name { font-size: 1.5rem; } }
     </style>
 </head>
@@ -106,7 +108,6 @@
         </div>
         <div class="nav-tools">
             <span class="track-btn" onclick="openTrackModal()">TRACK ORDER</span>
-            <span onclick="openSizeGuide()" style="cursor:pointer; font-size:0.7rem; font-weight:700; border-bottom:1px solid">SIZE GUIDE</span>
             <div class="cart-icon" onclick="toggleCart()">
                 <i class="fas fa-shopping-bag"></i>
                 <span class="cart-badge" id="cart-count">0</span>
@@ -122,11 +123,11 @@
         </div>
     </section>
 
-    <div class="shop-controls" id="shop">
+    <div class="shop-controls">
         <div class="category-scroll" id="cat-list"></div>
         <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchBox" placeholder="Search Style..." onkeyup="filterItems()">
+            <i class="fas fa-search" style="position: absolute; left: 15px; top: 18px; color: var(--primary);"></i>
+            <input type="text" id="searchBox" placeholder="Search our collection..." onkeyup="filterItems()" style="padding-left: 45px;">
         </div>
     </div>
 
@@ -134,75 +135,68 @@
         <div id="product-grid" class="product-grid"></div>
     </main>
 
-    <footer style="background:#0a0a0a; color:white; padding:60px 5%; text-align:center;">
-        <p style="font-size:10px; color:#555;">© 2025 AOSE CLOTHING COMPANY. AUTHENTIC LUXURY.</p>
+    <footer style="background:#0a0a0a; color:white; padding:40px 5%; text-align:center;">
+        <p style="font-size:10px; color:#555; letter-spacing: 2px;">© 2025 AOSE CLOTHING COMPANY. AUTHENTIC LUXURY.</p>
+        <button onclick="protectedExport()" style="background:none; border:none; color:#1a1a1a; font-size:8px; margin-top:15px; cursor:pointer;">ADMIN CONSOLE</button>
     </footer>
-
-    <div class="modal" id="size-modal">
-        <div class="modal-box">
-            <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="closeSizeGuide()"></i>
-            <h3>Size Guide (Inches)</h3>
-            <table style="width:100%; margin-top:20px; border-collapse:collapse;">
-                <tr style="border-bottom:1px solid #ddd"><th>Size</th><th>Chest</th><th>Length</th></tr>
-                <tr><td>S</td><td>38</td><td>27</td></tr>
-                <tr><td>M</td><td>40</td><td>28</td></tr>
-                <tr><td>L</td><td>42</td><td>29</td></tr>
-                <tr><td>XL</td><td>44</td><td>30</td></tr>
-            </table>
-        </div>
-    </div>
 
     <div class="modal" id="track-modal">
         <div class="modal-box">
-            <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="document.getElementById('track-modal').style.display='none'"></i>
-            <h3 style="font-family:var(--font-head)">Track Your Order</h3>
-            <p style="font-size:0.8rem; margin:10px 0;">Enter your Order ID (e.g., AOSE-XXXXX)</p>
-            <input type="text" id="track-input" placeholder="Order ID" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
-            <button class="add-to-cart" onclick="trackOrder()">Check Status</button>
+            <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="closeModal('track-modal')"></i>
+            <h3 style="font-family:var(--font-head); margin-bottom: 5px;">Track Order</h3>
+            <p id="saved-id-hint" style="font-size:0.7rem; color:var(--primary); margin-bottom:10px; display:none;"></p>
+            <input type="text" id="track-input" placeholder="Order ID (AOSE-XXXXX)">
+            <button class="add-to-cart" onclick="trackOrder()" style="margin-top: 10px;">Check Progress</button>
+            
             <div id="track-result" style="display:none;">
                 <div class="track-status">
-                    <div class="track-step active" id="s1">Order Placed</div>
-                    <div class="track-step" id="s2">Payment Verified</div>
-                    <div class="track-step" id="s3">Processing / Packaging</div>
-                    <div class="track-step" id="s4">Shipped</div>
+                    <div class="track-step active" id="s1">Order Placed & Confirmed</div>
+                    <div class="track-step" id="s2">Payment Verification</div>
+                    <div class="track-step" id="s3">Packaging & Quality Check</div>
+                    <div class="track-step" id="s4">Dispatched / In Transit</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="overlay" id="overlay" onclick="toggleCart()" style="position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:2000; display:none;"></div>
+    <div class="modal" id="checkout-modal">
+        <div class="modal-box">
+            <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="closeModal('checkout-modal')"></i>
+            <div id="step-info">
+                <h3 style="font-family:var(--font-head); margin-bottom:15px;">Shipping Details</h3>
+                <input type="text" id="c-name" placeholder="Full Name">
+                <input type="tel" id="c-phone" placeholder="WhatsApp Number">
+                <textarea id="c-address" placeholder="Full Delivery Address" rows="3"></textarea>
+                <button class="add-to-cart" onclick="goToPayment()" style="margin-top:10px;">Proceed to Payment</button>
+            </div>
+            <div id="step-pay" style="display:none; text-align:center;">
+                <h3 style="font-family:var(--font-head); margin-bottom:10px;">Scan & Pay</h3>
+                <p style="font-size:0.8rem; margin-bottom:15px;">Total Amount: ₹<span id="pay-total">0</span></p>
+                <div id="qrcode" style="margin:0 auto 20px; display:flex; justify-content:center;"></div>
+                <button class="add-to-cart" style="background:#25d366;" onclick="confirmOrder()">Confirm Order via WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     <div class="sidebar" id="cart-sidebar">
-        <div style="padding:25px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;">
-            <h3>BAG</h3><i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer"></i>
+        <div style="padding:25px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-family:var(--font-head); letter-spacing:1px;">YOUR BAG</h3>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer"></i>
         </div>
         <div id="cart-items" style="padding:25px; flex:1; overflow-y:auto;"></div>
-        <div style="padding:25px; background:#f9f9f9;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700;">
-                <span>TOTAL</span><span>₹<span id="cart-total">0</span></span>
+        <div style="padding:25px; background:#f9f9f9; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-weight:700;">
+                <span>SUBTOTAL</span><span>₹<span id="cart-total">0</span></span>
             </div>
             <button class="add-to-cart" onclick="openCheckout()">Checkout</button>
         </div>
     </div>
 
-    <div class="modal" id="checkout-modal">
-        <div class="modal-box">
-            <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="document.getElementById('checkout-modal').style.display='none'"></i>
-            <div id="step-info">
-                <h3>Delivery</h3>
-                <input type="text" id="c-name" placeholder="Full Name" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
-                <input type="tel" id="c-phone" placeholder="WhatsApp Number" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
-                <textarea id="c-address" placeholder="Address" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;" rows="3"></textarea>
-                <button class="add-to-cart" onclick="goToPayment()">Proceed</button>
-            </div>
-            <div id="step-pay" style="display:none; text-align:center;">
-                <h3>Scan to Pay</h3>
-                <div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
-                <button class="add-to-cart" style="background:#25d366;" onclick="confirmOrder()">Confirm via WhatsApp</button>
-            </div>
-        </div>
-    </div>
-
     <script>
+        // --- 1. CONFIGURATION ---
+        (function(){ emailjs.init("YOUR_PUBLIC_KEY"); })(); // Initial EmailJS
+
         const products = [
             { id: 401, name: "AOSE Gold-Stitch Edition", cat: "Shirts", price: 999, img: "pro.jpg" },
             { id: 402, name: "AOSE Luxury White", cat: "Shirts", price: 999, img: "pro3.jpg" },
@@ -215,20 +209,25 @@
         let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
         let userSelections = {};
 
+        // --- 2. INITIALIZATION ---
         function init() {
             products.forEach(p => userSelections[p.id] = { size: null });
             renderProducts(products);
             updateCart();
             const categories = ["All", "Shirts", "Hoodies", "Jackets"];
-            document.getElementById('cat-list').innerHTML = categories.map(c => `<button class="cat-btn" onclick="filterCat('${c}')">${c}</button>`).join('');
+            document.getElementById('cat-list').innerHTML = categories.map(c => 
+                `<button class="cat-btn ${c==='All'?'active':''}" onclick="filterCat('${c}', this)">${c}</button>`
+            ).join('');
+            checkSavedOrderId();
         }
 
         function renderProducts(list) {
             document.getElementById('product-grid').innerHTML = list.map(p => `
                 <div class="product-card">
-                    <div class="p-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500'"></div>
+                    <div class="p-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=AOSE+LUXURY'"></div>
                     <div class="p-info">
-                        <b>${p.name}</b><div class="p-price">₹${p.price}</div>
+                        <div style="font-weight:600; font-size:0.9rem;">${p.name}</div>
+                        <div class="p-price">₹${p.price}</div>
                         <div class="size-row" id="sizes-${p.id}">
                             ${['S','M','L','XL'].map(s => `<div class="s-box" onclick="selectSize(${p.id}, '${s}', this)">${s}</div>`).join('')}
                         </div>
@@ -238,6 +237,7 @@
             `).join('');
         }
 
+        // --- 3. CORE LOGIC ---
         function selectSize(pid, size, el) {
             document.querySelectorAll(`#sizes-${pid} .s-box`).forEach(b => b.classList.remove('active'));
             el.classList.add('active');
@@ -245,9 +245,9 @@
         }
 
         function addToCart(pid) {
-            if(!userSelections[pid].size) return alert("Select a size.");
+            if(!userSelections[pid].size) return alert("Please select a size.");
             const p = products.find(i => i.id === pid);
-            cart.push({...p, selSize: userSelections[pid].size});
+            cart.push({...p, selSize: userSelections[pid].size, orderTempId: Date.now()});
             updateCart(); toggleCart();
         }
 
@@ -257,13 +257,14 @@
             let total = 0;
             document.getElementById('cart-items').innerHTML = cart.map((item, idx) => {
                 total += item.price;
-                return `<div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <img src="${item.img}" style="width:40px; height:50px; object-fit:cover;">
-                    <div style="flex:1; font-size:0.7rem;"><b>${item.name}</b><br>Size: ${item.selSize}</div>
-                    <i class="fas fa-trash" onclick="cart.splice(${idx},1); updateCart();" style="cursor:pointer; color:#ccc;"></i>
+                return `<div style="display:flex; gap:15px; margin-bottom:15px; align-items:center;">
+                    <img src="${item.img}" style="width:50px; height:60px; object-fit:cover;">
+                    <div style="flex:1; font-size:0.75rem;"><b>${item.name}</b><br>Size: ${item.selSize}<br>₹${item.price}</div>
+                    <i class="fas fa-trash" onclick="cart.splice(${idx},1); updateCart();" style="cursor:pointer; color:#ddd;"></i>
                 </div>`;
             }).join('');
             document.getElementById('cart-total').innerText = total;
+            document.getElementById('pay-total').innerText = total;
         }
 
         function toggleCart() {
@@ -272,46 +273,109 @@
             ov.style.display = (ov.style.display === 'block') ? 'none' : 'block';
         }
 
-        function openSizeGuide() { document.getElementById('size-modal').style.display='flex'; }
-        function closeSizeGuide() { document.getElementById('size-modal').style.display='none'; }
-        
-        function openTrackModal() { document.getElementById('track-modal').style.display='flex'; }
-        
-        function trackOrder() {
-            const id = document.getElementById('track-input').value.toUpperCase();
-            if(!id.startsWith("AOSE-")) return alert("Invalid Order ID format.");
-            document.getElementById('track-result').style.display = 'block';
-            // Simulated logic: if ID ends in a number > 5, show it as Shipped
-            const lastChar = id.slice(-1);
-            document.getElementById('s2').classList.add('active');
-            if(!isNaN(lastChar) && lastChar > 5) {
-                document.getElementById('s3').classList.add('active');
-                document.getElementById('s4').classList.add('active');
-            } else {
-                document.getElementById('s3').classList.add('active');
-                document.getElementById('s4').classList.remove('active');
+        function filterItems() {
+            const term = document.getElementById('searchBox').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+            renderProducts(filtered);
+        }
+
+        function filterCat(cat, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filtered = (cat === "All") ? products : products.filter(p => p.cat === cat);
+            renderProducts(filtered);
+        }
+
+        // --- 4. TRACKING & CHECKOUT ---
+        function checkSavedOrderId() {
+            const saved = localStorage.getItem('last_aose_id');
+            if(saved) {
+                const hint = document.getElementById('saved-id-hint');
+                hint.innerText = "Tracking Last Order: " + saved;
+                hint.style.display = "block";
+                document.getElementById('track-input').value = saved;
             }
         }
 
+        function trackOrder() {
+            const id = document.getElementById('track-input').value.toUpperCase();
+            if(!id.includes("AOSE")) return alert("Please enter a valid AOSE ID.");
+            document.getElementById('track-result').style.display = 'block';
+            setTimeout(() => { document.getElementById('s2').classList.add('active'); }, 500);
+            setTimeout(() => { document.getElementById('s3').classList.add('active'); }, 1000);
+        }
+
+        function openTrackModal() { document.getElementById('track-modal').style.display='flex'; }
         function openCheckout() { if(cart.length>0) { toggleCart(); document.getElementById('checkout-modal').style.display='flex'; } }
-        
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
         function goToPayment() {
-            if(!document.getElementById('c-name').value) return alert("Fill details.");
+            if(!document.getElementById('c-name').value || !document.getElementById('c-phone').value) return alert("Please fill shipping info.");
             document.getElementById('step-info').style.display='none';
             document.getElementById('step-pay').style.display='block';
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
                 text: `upi://pay?pa=7887731818@ybl&pn=AOSE&am=${document.getElementById('cart-total').innerText}&cu=INR`,
-                width: 150, height: 150
+                width: 160, height: 160
             });
         }
 
+        // --- 5. ORDER CONFIRMATION & AUTOMATION ---
         function confirmOrder() {
+            // A. Generate Unique Order ID
             const orderId = "AOSE-" + Math.random().toString(36).substring(2, 7).toUpperCase();
-            const msg = `NEW ORDER: ${orderId}%0AName: ${document.getElementById('c-name').value}%0AItems: ${cart.map(i => i.name + ' ('+i.selSize+')').join(', ')}`;
+            const name = document.getElementById('c-name').value;
+            const phone = document.getElementById('c-phone').value;
+            const addr = document.getElementById('c-address').value;
+            const total = document.getElementById('cart-total').innerText;
+            const itemsList = cart.map(i => i.name + ' ('+i.selSize+')').join(', ');
+
+            // B. Save to Database (LocalStorage for Excel export)
+            localStorage.setItem('last_aose_id', orderId);
+            let log = JSON.parse(localStorage.getItem('order_history')) || [];
+            log.push({ orderId, name, phone, addr, items: itemsList, total, date: new Date().toLocaleDateString() });
+            localStorage.setItem('order_history', JSON.stringify(log));
+
+            // C. Trigger Email Notification (EmailJS)
+            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                order_id: orderId,
+                customer_name: name,
+                items: itemsList,
+                total: total
+            }).catch(err => console.log("Email error: ", err));
+
+            // D. Open WhatsApp Automation
+            const msg = `*ORDER PLACED - AOSE*%0A%0A*Order ID:* ${orderId}%0A*Name:* ${name}%0A*Items:* ${itemsList}%0A*Total:* ₹${total}%0A*Address:* ${addr}%0A%0A_Please share payment screenshot below._`;
             window.open(`https://wa.me/917887731818?text=${msg}`);
-            alert("Order Placed! ID: " + orderId);
+            
+            alert(`SUCCESS! Order ${orderId} placed.\nTracking ID saved to your browser.`);
             cart = []; updateCart(); location.reload();
+        }
+
+        // --- 6. ADMIN FUNCTIONS ---
+        function protectedExport() {
+            if(prompt("Admin Access Password:") === "AOSE2025") {
+                downloadExcel();
+            } else {
+                alert("Unauthorized.");
+            }
+        }
+
+        function downloadExcel() {
+            const log = JSON.parse(localStorage.getItem('order_history')) || [];
+            if(log.length === 0) return alert("No orders found.");
+            
+            let csv = "data:text/csv;charset=utf-8,Date,OrderID,Name,Phone,Address,Items,Total\n";
+            log.forEach(r => {
+                csv += `${r.date},${r.orderId},${r.name},${r.phone},"${r.addr}","${r.items}",${r.total}\n`;
+            });
+
+            const link = document.createElement("a");
+            link.href = encodeURI(csv);
+            link.download = "AOSE_Order_Database.csv";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         init();
