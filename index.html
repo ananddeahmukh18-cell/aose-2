@@ -3,350 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSE | The Unlimited Collection</title>
+    <title>AOSE | Premium Clothing Luxury</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
         :root {
-            --primary: #0f3d2e; /* Deep Green from Image */
-            --accent: #c6a664;  /* Gold from Image */
-            --bg-lux: #EEE0C4;
-            --text-dark: #121212;
-            --border: rgba(0,0,0,0.08);
-            --font-main: 'Montserrat', sans-serif;
-            --font-head: 'Playfair Display', serif;
+            --header-dark: #1a1a1b; /* Dark bar from image */
+            --accent-gold: #c6a664; /* Gold branding from image */
+            --bg-canvas: #EEE0C4;  /* The bone-color requested */
+            --primary-green: #0f3d2e;
+            --text-main: #333;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        body { font-family: var(--font-main); color: var(--text-dark); background-color: var(--bg-lux); line-height: 1.6; overflow-x: hidden; }
-        
-        /* --- BRAND HEADER --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-canvas); color: var(--text-main); }
+
+        /* --- PREMIUM BLACK & GOLD HEADER --- */
         header {
-            position: sticky; top: 0; z-index: 1000; background: rgba(238, 224, 196, 0.95);
-            backdrop-filter: blur(15px); padding: 10px 5%; display: flex; 
-            justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border);
-        }
-        .brand-container { display: flex; align-items: center; gap: 15px; }
-        .brand-container img { height: 60px; }
-        .brand-name { 
-            font-family: var(--font-head); font-size: 2rem; font-weight: 700;
-            background: linear-gradient(to right, #0f3d2e, #c6a664);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
+            background: var(--header-dark);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        .nav-tools { display: flex; gap: 20px; align-items: center; }
-        .cart-icon { position: relative; cursor: pointer; font-size: 1.3rem; color: var(--primary); }
-        .cart-badge {
-            position: absolute; top: -8px; right: -10px; background: var(--primary);
-            color: white; font-size: 10px; width: 18px; height: 18px;
-            display: flex; align-items: center; justify-content: center; border-radius: 50%;
-            font-weight: 600; border: 2px solid var(--bg-lux);
-        }
-
-        /* --- VIDEO HERO --- */
-        .hero {
-            height: 65vh; background: #000; position: relative;
-            display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden;
-        }
-        .hero video {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            min-width: 100%; min-height: 100%; object-fit: cover; opacity: 0.5;
-        }
-        .hero-content { z-index: 5; color: #fff; }
-        .hero-content h1 { font-family: var(--font-head); font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: 4px; }
-        .hero-content p { text-transform: uppercase; letter-spacing: 6px; color: var(--accent); font-size: 0.9rem; }
-
-        /* --- CONTROLS --- */
-        .shop-controls { padding: 40px 5%; display: flex; flex-direction: column; gap: 20px; }
-        .category-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; }
-        .cat-btn {
-            white-space: nowrap; padding: 10px 25px; border: 1px solid var(--border);
-            background: rgba(255,255,255,0.4); cursor: pointer; font-weight: 600; font-size: 0.75rem;
-        }
-        .cat-btn.active { background: var(--primary); color: #fff; }
-
-        .search-bar { width: 100%; max-width: 400px; position: relative; }
-        .search-bar input { width: 100%; padding: 12px 45px; border: 1px solid var(--border); background: white; border-radius: 4px; }
-        .search-bar i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--primary); }
-
-        /* --- PRODUCTS --- */
-        .main-container { padding: 0 5% 60px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; }
-        .product-card { transition: 0.4s; }
-        .p-image { height: 400px; background: #dcd0b8; overflow: hidden; position: relative; }
-        .p-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        .product-card:hover .p-image img { transform: scale(1.08); }
-
-        .p-info { padding: 20px; text-align: center; }
-        .p-price { color: var(--primary); font-weight: 700; font-size: 1.2rem; margin-bottom: 15px; }
-
-        .size-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .s-box { 
-            width: 40px; height: 40px; border: 1px solid var(--border); display: flex; 
-            align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;
-        }
-        .s-box.active { background: var(--primary); color: #fff; transform: scale(1.1); }
-
-        .add-to-cart { 
-            width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none;
-            text-transform: uppercase; font-weight: 600; cursor: pointer; letter-spacing: 2px;
-        }
-
-        /* --- TESTIMONIALS --- */
-        .testimonials { padding: 80px 5%; background: rgba(0,0,0,0.02); text-align: center; }
-        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
-        .test-card { padding: 30px; background: white; border-bottom: 3px solid var(--accent); }
-
-        /* --- MODAL --- */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: var(--bg-lux); width: 100%; max-width: 500px; padding: 40px; position: relative; }
+        .brand-section { display: flex; align-items: center; gap: 20px; }
+        .brand-section img { height: 70px; border: 1px solid var(--accent-gold); border-radius: 2px; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        .brand-text-wrapper { display: flex; flex-direction: column; }
+        .brand-name { 
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--accent-gold);
+            letter-spacing: 4px;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        .brand-sub { color: #888; font-size: 0.6rem; letter-spacing: 2px; margin-top: 5px; }
 
-        .sidebar { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: white; z-index: 2001; transition: 0.5s; }
-        .sidebar.active { right: 0; }
+        .nav-links { display: flex; gap: 30px; align-items: center; color: #fff; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; }
+        .nav-links span:hover { color: var(--accent-gold); cursor: pointer; transition: 0.3s; }
+        
+        .cart-trigger {
+            background: var(--accent-gold);
+            color: var(--header-dark);
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* --- LAYOUT WRAPPER --- */
+        .layout-container { display: flex; padding: 40px 5%; gap: 40px; }
+
+        /* SIDE INDEX (MATCHING IMAGE) */
+        .side-index {
+            width: 250px;
+            background: var(--header-dark);
+            color: #fff;
+            padding: 30px 0;
+            height: fit-content;
+            border-radius: 4px;
+            display: none; /* Set to flex for desktop */
+        }
+        @media (min-width: 1024px) { .side-index { display: block; } }
+
+        .index-item {
+            padding: 15px 30px;
+            font-size: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .index-item:hover { background: var(--primary-green); color: var(--accent-gold); }
+
+        /* MAIN SHOP AREA */
+        .shop-area { flex: 1; }
+        .hero-banner { 
+            height: 350px; 
+            background: #000; 
+            margin-bottom: 40px; 
+            position: relative;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hero-banner video { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+        .hero-banner h2 { position: relative; z-index: 2; color: #fff; font-family: 'Playfair Display'; font-size: 3rem; }
+
+        /* PRODUCT GRID */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #fff;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.4s;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .product-card:hover { transform: translateY(-10px); border-color: var(--accent-gold); }
+
+        .img-container { height: 350px; background: #f4f4f4; margin-bottom: 20px; overflow: hidden; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .product-card:hover img { transform: scale(1.1); }
+
+        .p-cat { font-size: 0.65rem; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
+        .p-title { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--header-dark); }
+        .p-price { color: var(--primary-green); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; }
+
+        .size-selector { display: flex; gap: 8px; margin-bottom: 15px; }
+        .size-chip {
+            flex: 1; height: 35px; border: 1px solid #ddd;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .size-chip.active { background: var(--header-dark); color: var(--accent-gold); border-color: var(--header-dark); }
+
+        .buy-btn {
+            width: 100%; background: var(--header-dark); color: #fff;
+            padding: 12px; border: none; font-weight: 600; cursor: pointer;
+            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;
+        }
+        .buy-btn:hover { background: var(--primary-green); color: var(--accent-gold); }
+
+        /* --- CART & MODALS --- */
+        .cart-sidebar {
+            position: fixed; right: -100%; top: 0; width: 400px; height: 100vh;
+            background: #fff; z-index: 2000; transition: 0.5s; padding: 40px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        }
+        .cart-sidebar.active { right: 0; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1999; }
 
         @media (max-width: 768px) {
-            .sidebar { width: 100%; }
+            .cart-sidebar { width: 100%; }
             .brand-name { font-size: 1.5rem; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand-container">
-            <img src="aose ad.png" alt="Logo">
-            <span class="brand-name">AOSE</span>
+        <div class="brand-section">
+            <img src="aose ad.png" alt="AOSE LOGO">
+            <div class="brand-text-wrapper">
+                <span class="brand-name">AOSE</span>
+                <span class="brand-sub">AUTHENTIC LUXURY CLOTHING</span>
+            </div>
         </div>
-        <div class="nav-tools">
-            <span onclick="openSizeGuide()" style="cursor:pointer; font-size:0.7rem; font-weight:700; border-bottom:1px solid">SIZE GUIDE</span>
-            <div class="cart-icon" onclick="toggleCart()">
+        
+        <div class="nav-links">
+            <span>COLLECTION</span>
+            <span>BESTSELLERS</span>
+            <span>OUR STORY</span>
+            <div class="cart-trigger" onclick="toggleCart()">
                 <i class="fas fa-shopping-bag"></i>
-                <span class="cart-badge" id="cart-count">0</span>
+                <span id="cart-count">0</span>
             </div>
         </div>
     </header>
 
-    <section class="hero">
-        <video autoplay muted loop playsinline>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-showing-off-a-white-outfit-34575-large.mp4" type="video/mp4">
-        </video>
-        <div class="hero-content">
-            <p>Premium Luxury Wear</p>
-            <h1>THE UNLIMITED COLLECTION</h1>
-        </div>
-    </section>
+    <div class="layout-container">
+        <aside class="side-index">
+            <div style="padding: 0 30px 20px; color: var(--accent-gold); font-size: 0.7rem; font-weight: 800;">BROWSE INDEX</div>
+            <div class="index-item"><i class="fas fa-tshirt"></i> NEW ARRIVALS</div>
+            <div class="index-item"><i class="fas fa-star"></i> LIMITED EDITIONS</div>
+            <div class="index-item"><i class="fas fa-percentage"></i> EXCLUSIVE OFFERS</div>
+            <div class="index-item"><i class="fas fa-user-shield"></i> PREMIUM MEMBERS</div>
+            <div class="index-item"><i class="fas fa-headset"></i> 24/7 SUPPORT</div>
+        </aside>
 
-    <div class="shop-controls" id="shop">
-        <div class="category-scroll" id="cat-list"></div>
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchBox" placeholder="Search Style..." onkeyup="filterItems()">
+        <div class="shop-area">
+            <div class="hero-banner">
+                <video autoplay muted loop playsinline>
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-showing-off-a-white-outfit-34575-large.mp4" type="video/mp4">
+                </video>
+                <h2>AOSE UNLIMITED</h2>
+            </div>
+
+            <div class="product-grid" id="main-grid">
+                </div>
         </div>
     </div>
 
-    <main class="main-container">
-        <div id="product-grid" class="product-grid"></div>
-    </main>
-
-    <section class="testimonials">
-        <h2 style="font-family: var(--font-head); font-size: 2rem;">What Our Clients Say</h2>
-        <div class="test-grid">
-            <div class="test-card">
-                <p>"Incredible quality. The fabric feels premium and the fit is perfect."</p>
-                <h4 style="margin-top:15px; color:var(--accent)">- Rahul M.</h4>
-            </div>
-            <div class="test-card">
-                <p>"Best luxury brand in the segment. Fast delivery and great support."</p>
-                <h4 style="margin-top:15px; color:var(--accent)">- Sameer V.</h4>
-            </div>
-            <div class="test-card">
-                <p>"The Gold stitching is beautiful. Highly recommend AOSE."</p>
-                <h4 style="margin-top:15px; color:var(--accent)">- Arjun K.</h4>
-            </div>
+    <div class="overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cart-panel">
+        <h2 style="font-family: 'Playfair Display'; margin-bottom: 30px;">YOUR BAG</h2>
+        <div id="cart-content" style="height: 60vh; overflow-y: auto; margin-bottom: 20px;"></div>
+        <hr style="margin-bottom: 20px; opacity: 0.1;">
+        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem; margin-bottom: 20px;">
+            <span>TOTAL:</span>
+            <span style="color: var(--primary-green);">₹<span id="cart-total">0</span></span>
         </div>
-    </section>
-
-    <footer style="background:#0a0a0a; color:white; padding:60px 5%; text-align:center;">
-        <img src="aose ad.png" style="height:40px; filter:invert(1); margin-bottom:20px;">
-        <div style="margin-bottom:20px;">
-            <a href="https://www.instagram.com/official_aose?igsh=MThlcDhqanBwdjdlaw%3D%3D&utm_source=qr" target="_blank" style="color:white; margin:0 15px; font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
-            <a href="https://wa.me/917887731818" target="_blank" style="color:white; margin:0 15px; font-size:1.5rem;"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        <p style="font-size:10px; color:#555;">© 2025 AOSE CLOTHING COMPANY. AUTHENTIC LUXURY.</p>
-    </footer>
-
-    <div class="modal" id="size-modal">
-        <div class="modal-box">
-            <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="closeSizeGuide()"></i>
-            <h3 style="font-family:var(--font-head)">Size Guide (Inches)</h3>
-            <table>
-                <tr><th>Size</th><th>Chest</th><th>Length</th><th>Shoulder</th></tr>
-                <tr><td>S</td><td>38</td><td>27</td><td>17</td></tr>
-                <tr><td>M</td><td>40</td><td>28</td><td>18</td></tr>
-                <tr><td>L</td><td>42</td><td>29</td><td>19</td></tr>
-                <tr><td>XL</td><td>44</td><td>30</td><td>20</td></tr>
-            </table>
-        </div>
-    </div>
-
-    <div class="overlay" id="overlay" onclick="toggleCart()" style="position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:2000; display:none;"></div>
-    
-    <div class="sidebar" id="cart-sidebar">
-        <div style="padding:25px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;">
-            <h3>BAG</h3><i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer"></i>
-        </div>
-        <div id="cart-items" style="padding:25px; flex:1; overflow-y:auto;"></div>
-        <div style="padding:25px; background:#f9f9f9;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700;">
-                <span>TOTAL</span><span>₹<span id="cart-total">0</span></span>
-            </div>
-            <button class="add-to-cart" onclick="openCheckout()">Checkout</button>
-        </div>
-    </div>
-
-    <div class="modal" id="checkout-modal">
-        <div class="modal-box">
-            <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="document.getElementById('checkout-modal').style.display='none'"></i>
-            <div id="step-info">
-                <h3>Delivery</h3>
-                <input type="text" id="c-name" placeholder="Name" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
-                <input type="tel" id="c-phone" placeholder="WhatsApp Number" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
-                <textarea id="c-address" placeholder="Address" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;" rows="3"></textarea>
-                <button class="add-to-cart" onclick="goToPayment()">Proceed</button>
-            </div>
-            <div id="step-pay" style="display:none; text-align:center;">
-                <h3>Scan to Pay</h3>
-                <div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
-                <button class="add-to-cart" style="background:#25d366;" onclick="confirmOrder()">Confirm Order</button>
-            </div>
-        </div>
+        <button class="buy-btn" style="padding: 20px;" onclick="initCheckout()">PROCEED TO CHECKOUT</button>
     </div>
 
     <script>
-        const CATEGORIES = ["All", "Shirts", "Hoodies", "Jackets"];
         const products = [
-            { id: 401, name: "AOSE Gold-Stitch Edition", cat: "Shirts", price: 999, img: "pro.jpg" },
-            { id: 402, name: "AOSE Luxury White", cat: "Shirts", price: 999, img: "pro3.jpg" },
-            { id: 403, name: "AOSE Premium Black", cat: "Shirts", price: 999, img: "pro4.jpg" },
-            { id: 404, name: "AOSE Azure Collection", cat: "Shirts", price: 999, img: "pro5.jpg" },
-            { id: 405, name: "AOSE Signature Texture", cat: "Shirts", price: 999, img: "propro.jpg" },
-            { id: 406, name: "AOSE Urban Grey", cat: "Shirts", price: 999, img: "proo9.jpg" }
+            { id: 501, name: "AOSE Gold Stitch - Edition 01", price: 999, img: "pro.jpg" },
+            { id: 502, name: "AOSE Gold Stitch - Edition 02", price: 999, img: "pro3.jpg" },
+            { id: 503, name: "AOSE Gold Stitch - Edition 03", price: 999, img: "pro4.jpg" },
+            { id: 504, name: "AOSE Gold Stitch - Edition 04", price: 999, img: "pro5.jpg" },
+            { id: 505, name: "AOSE Gold Stitch - Edition 05", price: 999, img: "propro.jpg" },
+            { id: 506, name: "AOSE Gold Stitch - Edition 06", price: 999, img: "proo9.jpg" }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
-        let activeCat = "All";
-        let userSelections = {};
+        let cart = [];
+        let selections = {};
 
         function init() {
-            renderCategories();
-            products.forEach(p => { 
-                userSelections[p.id] = { size: null, qty: 1 }; 
-                p.stock = { S: 100, M: 100, L: 100, XL: 100 };
+            products.forEach(p => {
+                selections[p.id] = { size: null, qty: 100 }; // Fixed stock 100
             });
-            renderProducts(products);
-            updateCart();
+            render();
         }
 
-        function renderCategories() {
-            const container = document.getElementById('cat-list');
-            container.innerHTML = CATEGORIES.map(c => 
-                `<button class="cat-btn ${c === activeCat ? 'active' : ''}" onclick="filterCat('${c}', this)">${c}</button>`
-            ).join('');
-        }
-
-        function renderProducts(list) {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = list.map(p => `
+        function render() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = products.map(p => `
                 <div class="product-card">
-                    <div class="p-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=AOSE'"></div>
-                    <div class="p-info">
-                        <div style="font-weight:600; margin-bottom:5px;">${p.name}</div>
-                        <div class="p-price">₹${p.price}</div>
-                        <div class="size-row" id="sizes-${p.id}">
-                            ${['S','M','L','XL'].map(s => `<div class="s-box" onclick="selectSize(${p.id}, '${s}', this)">${s}</div>`).join('')}
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart(${p.id}, this)">Add to Bag</button>
+                    <div class="img-container">
+                        <img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=AOSE+LUXURY'">
                     </div>
+                    <div class="p-cat">AOSE UNLIMITED</div>
+                    <div class="p-title">${p.name}</div>
+                    <div class="p-price">₹${p.price}</div>
+                    <div class="size-selector" id="size-group-${p.id}">
+                        ${['S','M','L','XL'].map(s => `
+                            <div class="size-chip" onclick="selectSize(${p.id}, '${s}', this)">${s}</div>
+                        `).join('')}
+                    </div>
+                    <button class="buy-btn" onclick="addToCart(${p.id})">Add to Bag</button>
                 </div>
             `).join('');
         }
 
         function selectSize(pid, size, el) {
-            document.querySelectorAll(`#sizes-${pid} .s-box`).forEach(b => b.classList.remove('active'));
+            document.querySelectorAll(`#size-group-${pid} .size-chip`).forEach(c => c.classList.remove('active'));
             el.classList.add('active');
-            userSelections[pid].size = size;
+            selections[pid].size = size;
         }
 
-        function addToCart(pid, btn) {
-            const sel = userSelections[pid];
-            if(!sel.size) return alert("Please select a size.");
+        function addToCart(pid) {
+            if(!selections[pid].size) return alert("Please select a size first.");
             const product = products.find(p => p.id === pid);
-            cart.push({ ...product, selSize: sel.size, selQty: 1, tempId: Date.now() });
-            btn.innerHTML = "ADDED";
-            setTimeout(() => { btn.innerHTML = "Add to Bag"; }, 1000);
-            updateCart();
+            cart.push({ ...product, size: selections[pid].size });
+            updateCartUI();
             toggleCart();
         }
 
-        function updateCart() {
-            localStorage.setItem('aose_cart', JSON.stringify(cart));
+        function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
+            const content = document.getElementById('cart-content');
             let total = 0;
-            document.getElementById('cart-items').innerHTML = cart.map((item, idx) => {
+            content.innerHTML = cart.map((item, idx) => {
                 total += item.price;
-                return `<div style="display:flex; gap:15px; margin-bottom:15px;">
-                    <img src="${item.img}" style="width:50px; height:60px; object-fit:cover;">
-                    <div style="flex:1; font-size:0.8rem;">
-                        <b>${item.name}</b><br>Size: ${item.selSize}<br>₹${item.price}
+                return `
+                    <div style="display:flex; gap:15px; margin-bottom:20px; align-items:center;">
+                        <img src="${item.img}" style="width:60px; height:70px; object-fit:cover;">
+                        <div style="flex:1">
+                            <div style="font-size:0.8rem; font-weight:600;">${item.name}</div>
+                            <div style="font-size:0.7rem; color:#888;">SIZE: ${item.size}</div>
+                        </div>
+                        <div style="font-weight:700;">₹${item.price}</div>
+                        <i class="fas fa-times" style="color:#ddd; cursor:pointer;" onclick="remove(${idx})"></i>
                     </div>
-                    <i class="fas fa-trash" onclick="removeFromCart(${idx})" style="cursor:pointer; color:#ddd;"></i>
-                </div>`;
+                `;
             }).join('');
             document.getElementById('cart-total').innerText = total;
         }
 
-        function removeFromCart(idx) { cart.splice(idx,1); updateCart(); }
-        function toggleCart() { 
-            document.getElementById('cart-sidebar').classList.toggle('active');
-            const ov = document.getElementById('overlay');
-            ov.style.display = (ov.style.display === 'block') ? 'none' : 'block';
-        }
-        function filterCat(cat, btn) { activeCat = cat; filterItems(); renderCategories(); }
-        function filterItems() {
-            const term = document.getElementById('searchBox').value.toLowerCase();
-            const filtered = products.filter(p => (activeCat === "All" || p.cat === activeCat) && p.name.toLowerCase().includes(term));
-            renderProducts(filtered);
+        function remove(idx) { cart.splice(idx, 1); updateCartUI(); }
+
+        function toggleCart() {
+            document.getElementById('cart-panel').classList.toggle('active');
+            const overlay = document.getElementById('cart-overlay');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
         }
 
-        function openSizeGuide() { document.getElementById('size-modal').style.display='flex'; }
-        function closeSizeGuide() { document.getElementById('size-modal').style.display='none'; }
-        
-        function openCheckout() { toggleCart(); document.getElementById('checkout-modal').style.display='flex'; }
-        
-        function goToPayment() {
-            if(!document.getElementById('c-name').value) return alert("Enter details");
-            document.getElementById('step-info').style.display='none';
-            document.getElementById('step-pay').style.display='block';
-            document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), {
-                text: `upi://pay?pa=7887731818@ybl&pn=AOSE&am=${document.getElementById('cart-total').innerText}&cu=INR`,
-                width: 160, height: 160
-            });
-        }
-
-        function confirmOrder() {
-            const msg = `NEW ORDER - AOSE: ${cart.map(i => i.name).join(", ")}`;
+        function initCheckout() {
+            if(cart.length === 0) return;
+            const msg = `*AOSE ORDER INQUIRY*%0AItems: ${cart.map(i => i.name + ' ('+i.size+')').join(', ')}%0A*Total:* ₹${document.getElementById('cart-total').innerText}`;
             window.open(`https://wa.me/917887731818?text=${msg}`);
-            cart = []; updateCart(); location.reload();
         }
 
         init();
