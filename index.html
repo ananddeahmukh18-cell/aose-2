@@ -1,1 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOSE | The Unlimited Collection</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+    <style>
+        :root {
+            --primary: #0f3d2e; /* AOSE Signature Green */
+            --accent: #c6a664;  /* Gold Accent */
+            --text-dark: #121212;
+            --text-light: #888;
+            --border: #f0f0f0;
+            --font-main: 'Montserrat', sans-serif;
+            --font-head: 'Playfair Display', serif;
+        }
+
+        /* --- SMOOTH SCROLLING --- */
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        body { font-family: var(--font-main); color: var(--text-dark); background: #ffffff; line-height: 1.6; overflow-x: hidden; }
+        
+        /* --- PREMIUM NAVIGATION --- */
+        header {
+            position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px); padding: 15px 5%; display: flex; 
+            justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo img { height: 50px; transition: 0.4s; cursor: pointer; }
+        .logo img:hover { transform: scale(1.02); }
+
+        .nav-tools { display: flex; gap: 20px; align-items: center; }
+        .cart-icon { position: relative; cursor: pointer; font-size: 1.3rem; transition: 0.3s; }
+        .cart-icon:hover { color: var(--accent); }
+        .cart-badge {
+            position: absolute; top: -8px; right: -10px; background: var(--primary);
+            color: white; font-size: 10px; width: 18px; height: 18px;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-weight: 600; border: 2px solid #fff;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 50vh; background: #000; position: relative;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            overflow: hidden;
+        }
+        .hero-content { z-index: 5; color: #fff; padding: 20px; }
+        .hero-content h1 { font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: 2px; }
+        .hero-content p { text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem; margin-top: 10px; color: var(--accent); }
+
+        /* --- FILTERS --- */
+        .shop-controls { padding: 30px 5%; background: #fff; }
+        .category-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: none; }
+        .cat-btn {
+            white-space: nowrap; padding: 10px 25px; border: 1px solid var(--border);
+            background: #fff; cursor: pointer; transition: 0.3s; 
+            text-transform: uppercase; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px;
+        }
+        .cat-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        .search-bar { width: 100%; max-width: 450px; position: relative; margin-top: 5px; }
+        .search-bar input { 
+            width: 100%; padding: 12px 15px 12px 45px; border: 1px solid var(--border);
+            border-radius: 0; font-family: var(--font-main); font-size: 0.9rem;
+        }
+        .search-bar i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #bbb; }
+
+        /* --- PRODUCT GRID --- */
+        .main-container { padding: 40px 5%; }
+        .product-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px 25px;
+        }
+
+        .product-card { background: #fff; transition: 0.3s; position: relative; }
+        .p-image { 
+            height: 400px; background: #fcfcfc; position: relative; 
+            overflow: hidden; border: 1px solid #f9f9f9;
+        }
+        .p-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+        .product-card:hover .p-image img { transform: scale(1.05); }
+
+        .p-info { padding: 20px 0; text-align: center; }
+        .p-name { font-weight: 500; font-size: 1rem; color: #333; margin-bottom: 8px; min-height: 25px; }
+        .p-price { color: var(--accent); font-weight: 700; font-size: 1.1rem; margin-bottom: 20px; }
+
+        /* SIZE & QTY SELECTORS */
+        .size-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        .s-box {
+            width: 40px; height: 40px; border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; cursor: pointer; transition: 0.2s; font-weight: 500;
+        }
+        .s-box:hover { border-color: var(--primary); }
+        .s-box.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        .qty-row { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px; }
+        .qty-btn { 
+            width: 32px; height: 32px; border: 1px solid var(--border); 
+            background: #fff; cursor: pointer; font-size: 1.1rem; transition: 0.2s;
+        }
+        .qty-btn:hover { background: #f9f9f9; }
+
+        .add-to-cart {
+            width: 100%; padding: 15px; background: var(--text-dark); color: #fff;
+            border: none; text-transform: uppercase; font-size: 0.85rem; 
+            font-weight: 600; cursor: pointer; transition: 0.4s; letter-spacing: 2px;
+        }
+        .add-to-cart:hover { background: var(--primary); transform: translateY(-2px); }
+
+        /* --- SIDEBAR --- */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; backdrop-filter: blur(4px); }
+        .sidebar {
+            position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
+            background: #fff; z-index: 2001; transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+            display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+        }
+        .sidebar.active { right: 0; }
+        .cart-header { padding: 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .cart-content { flex: 1; overflow-y: auto; padding: 30px; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 25px; align-items: center; }
+        .cart-item img { width: 70px; height: 90px; object-fit: cover; background: #f9f9f9; }
+
+        /* --- CHECKOUT --- */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: #fff; width: 100%; max-width: 480px; padding: 40px; position: relative; }
+
+        /* --- FOOTER --- */
+        footer { background: #0a0a0a; color: #fff; padding: 80px 5% 40px; text-align: center; }
+        .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 30px; }
+        .social-links a { font-size: 1.5rem; transition: 0.3s; color: rgba(255,255,255,0.6); }
+        .social-links a:hover { color: var(--accent); transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; }
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .p-image { height: 260px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><img src="aose ad.png" alt="AOSE"></div>
+        <div class="nav-tools">
+            <a href="https://wa.me/917887731818" target="_blank"><i class="fab fa-whatsapp" style="color: #25D366; font-size: 1.4rem;"></i></a>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-badge" id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p>The 2025 Edition</p>
+            <h1>AOSE UNLIMITED</h1>
+        </div>
+    </section>
+
+    <div class="shop-controls" id="shop">
+        <div class="category-scroll" id="cat-list"></div>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchBox" placeholder="Search our collection..." onkeyup="filterItems()">
+        </div>
+    </div>
+
+    <main class="main-container">
+        <div id="product-grid" class="product-grid"></div>
+    </main>
+
+    <footer>
+        <img src="aose ad.png" style="height: 45px; filter: invert(1); margin-bottom: 30px;">
+        <div class="social-links">
+            <a href="https://www.instagram.com/official_aose?igsh=MThlcDhqanBwdjdlaw%3D%3D&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/917887731818" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p style="font-size: 11px; color: #555; letter-spacing: 2px;">© 2025 AOSE CLOTHING COMPANY. ESTABLISHED FOR STYLE.</p>
+    </footer>
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3 style="letter-spacing: 1px;">YOUR BAG</h3>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer; font-size: 1.2rem;"></i>
+        </div>
+        <div class="cart-content" id="cart-items"></div>
+        <div style="padding: 30px; background: #fafafa; border-top: 1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-weight:600;">
+                <span>SUBTOTAL</span>
+                <span style="color: var(--accent);">₹<span id="cart-total">0</span></span>
+            </div>
+            <button class="add-to-cart" onclick="openCheckout()">Confirm Order</button>
+        </div>
+    </div>
+
+    <div class="modal" id="checkout-modal">
+        <div class="modal-box">
+            <i class="fas fa-times" style="position:absolute; top:25px; right:25px; cursor:pointer;" onclick="closeCheckout()"></i>
+            <div id="step-info">
+                <h3 style="margin-bottom:25px; font-family: var(--font-head); font-size: 1.5rem;">Shipping Information</h3>
+                <input type="text" id="c-name" placeholder="Full Name" style="width:100%; padding:14px; margin-bottom:12px; border:1px solid #ddd;">
+                <input type="tel" id="c-phone" placeholder="WhatsApp Number" style="width:100%; padding:14px; margin-bottom:12px; border:1px solid #ddd;">
+                <textarea id="c-address" placeholder="Shipping Address" style="width:100%; padding:14px; margin-bottom:20px; border:1px solid #ddd; font-family: inherit;" rows="3"></textarea>
+                <button class="add-to-cart" onclick="goToPayment()">Continue to Payment</button>
+            </div>
+            <div id="step-pay" style="display:none; text-align:center;">
+                <h3 style="margin-bottom:10px;">Payment QR</h3>
+                <p style="font-size: 0.8rem; color: #777; margin-bottom: 20px;">Scan to complete your purchase of ₹<span id="pay-amt"></span></p>
+                <div id="qrcode" style="margin:20px auto; display:flex; justify-content:center; border: 10px solid #fff;"></div>
+                <button class="add-to-cart" style="background:#25d366; margin-top:20px;" onclick="confirmOrder()"><i class="fab fa-whatsapp"></i> Notify via WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CATEGORIES = ["All", "Shirts", "Hoodies", "Jackets", "Accessories"];
+        
+        // UNLIMITED PRODUCTS DATA
+        const products = [
+            { id: 201, name: "AOSE Premium Stitch - Edition 01", cat: "Shirts", price: 999, img: "pro.jpg" },
+            { id: 202, name: "AOSE Premium Stitch - Edition 02", cat: "Shirts", price: 999, img: "pro3.jpg" },
+            { id: 203, name: "AOSE Premium Stitch - Edition 03", cat: "Shirts", price: 999, img: "pro4.jpg" },
+            { id: 204, name: "AOSE Premium Stitch - Edition 04", cat: "Shirts", price: 999, img: "pro5.jpg" },
+            { id: 205, name: "AOSE Premium Stitch - Edition 05", cat: "Shirts", price: 999, img: "propro.jpg" },
+            { id: 206, name: "AOSE Premium Stitch - Edition 06", cat: "Shirts", price: 999, img: "proo9.jpg" },
+            { id: 207, name: "AOSE Premium Stitch - Edition 07", cat: "Shirts", price: 999, img: "proo10.jpg" },
+            { id: 208, name: "AOSE Premium Stitch - Edition 08", cat: "Shirts", price: 999, img: "proo11.jpg" },
+            { id: 209, name: "AOSE Premium Stitch - Edition 09", cat: "Shirts", price: 999, img: "proo12.jpg" },
+            { id: 210, name: "AOSE Premium Stitch - Edition 10", cat: "Shirts", price: 999, img: "proo13.jpg" },
+            { id: 211, name: "AOSE Premium Stitch - Edition 11", cat: "Shirts", price: 999, img: "proo14.jpg" },
+            { id: 212, name: "AOSE Premium Stitch - Edition 12", cat: "Shirts", price: 999, img: "proo15.jpg" }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
+        let activeCat = "All";
+        let userSelections = {};
+
+        // INITIALIZE ALL PRODUCTS WITH 100 STOCK PER SIZE
+        function init() {
+            renderCategories();
+            products.forEach(p => { 
+                userSelections[p.id] = { size: null, qty: 1 }; 
+                p.stock = { S: 100, M: 100, L: 100, XL: 100 }; // Uniform 100 quantity
+            });
+            renderProducts(products);
+            updateCart();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('cat-list');
+            container.innerHTML = CATEGORIES.map(c => 
+                `<button class="cat-btn ${c === activeCat ? 'active' : ''}" onclick="filterCat('${c}', this)">${c}</button>`
+            ).join('');
+        }
+
+        function renderProducts(list) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = list.map(p => `
+                <div class="product-card">
+                    <div class="p-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=AOSE+Collection'"></div>
+                    <div class="p-info">
+                        <div class="p-name">${p.name}</div>
+                        <div class="p-price">₹${p.price}</div>
+                        <div class="size-row" id="sizes-${p.id}">
+                            ${Object.keys(p.stock).map(s => `
+                                <div class="s-box" onclick="selectSize(${p.id}, '${s}', this)">${s}</div>
+                            `).join('')}
+                        </div>
+                        <div class="qty-row">
+                            <button class="qty-btn" onclick="updateQty(${p.id}, -1)">-</button>
+                            <span id="qty-val-${p.id}" style="width:30px; font-weight:700;">1</span>
+                            <button class="qty-btn" onclick="updateQty(${p.id}, 1)">+</button>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${p.id})">Add to Bag</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- FIXED LOGIC FUNCTIONS ---
+        function selectSize(pid, size, el) {
+            document.querySelectorAll(`#sizes-${pid} .s-box`).forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            userSelections[pid].size = size;
+        }
+
+        function updateQty(pid, delta) {
+            let current = userSelections[pid].qty + delta;
+            if(current < 1) current = 1;
+            userSelections[pid].qty = current;
+            document.getElementById(`qty-val-${pid}`).innerText = current;
+        }
+
+        function filterCat(cat, btn) {
+            activeCat = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterItems();
+        }
+
+        function filterItems() {
+            const term = document.getElementById('searchBox').value.toLowerCase();
+            const filtered = products.filter(p => 
+                (activeCat === "All" || p.cat === activeCat) && 
+                p.name.toLowerCase().includes(term)
+            );
+            renderProducts(filtered);
+        }
+
+        function addToCart(pid) {
+            const sel = userSelections[pid];
+            if(!sel.size) return alert("Please select a size first.");
+            
+            const product = products.find(p => p.id === pid);
+            cart.push({ ...product, selSize: sel.size, selQty: sel.qty, tempId: Date.now() });
+            updateCart();
+            toggleCart();
+        }
+
+        function updateCart() {
+            localStorage.setItem('aose_cart', JSON.stringify(cart));
+            document.getElementById('cart-count').innerText = cart.length;
+            let total = 0;
+            document.getElementById('cart-items').innerHTML = cart.map((item, idx) => {
+                total += (item.price * item.selQty);
+                return `
+                <div class="cart-item">
+                    <img src="${item.img}">
+                    <div style="flex:1">
+                        <div style="font-size:0.85rem; font-weight:600; text-transform:uppercase;">${item.name}</div>
+                        <div style="font-size:0.75rem; color:#888;">${item.selSize} | Qty: ${item.selQty}</div>
+                        <div style="font-weight:700; margin-top:3px;">₹${item.price * item.selQty}</div>
+                    </div>
+                    <i class="fas fa-trash-alt" style="cursor:pointer; color:#eee; transition:0.3s" onmouseover="this.style.color='red'" onmouseout="this.style.color='#eee'" onclick="removeFromCart(${idx})"></i>
+                </div>`;
+            }).join('');
+            document.getElementById('cart-total').innerText = total;
+        }
+
+        function removeFromCart(idx) {
+            cart.splice(idx, 1);
+            updateCart();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('active');
+            const ov = document.getElementById('overlay');
+            ov.style.display = (ov.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function openCheckout() {
+            if(cart.length === 0) return alert("Bag is empty.");
+            toggleCart();
+            document.getElementById('checkout-modal').style.display = 'flex';
+        }
+
+        function closeCheckout() { document.getElementById('checkout-modal').style.display = 'none'; }
+
+        function goToPayment() {
+            const name = document.getElementById('c-name').value;
+            const phone = document.getElementById('c-phone').value;
+            const addr = document.getElementById('c-address').value;
+            if(!name || !phone || !addr) return alert("Please complete all fields.");
+            
+            const total = document.getElementById('cart-total').innerText;
+            document.getElementById('pay-amt').innerText = total;
+            document.getElementById('step-info').style.display = 'none';
+            document.getElementById('step-pay').style.display = 'block';
+
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), {
+                text: `upi://pay?pa=7887731818@ybl&pn=AOSE&am=${total}&cu=INR`,
+                width: 160, height: 160
+            });
+        }
+
+        function confirmOrder() {
+            const items = cart.map(i => `${i.name} [Size ${i.selSize}] x${i.selQty}`).join(", ");
+            const total = document.getElementById('cart-total').innerText;
+            const name = document.getElementById('c-name').value;
+            const msg = `*NEW AOSE ORDER*%0A*Customer:* ${name}%0A*Items:* ${items}%0A*Total:* ₹${total}%0A*Address:* ${document.getElementById('c-address').value}`;
+            window.open(`https://wa.me/917887731818?text=${msg}`);
+            cart = []; updateCart(); location.reload();
+        }
+
+        init();
+    </script>
+</body>
+</html>
