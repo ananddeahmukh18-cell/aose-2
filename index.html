@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AOSE | Timeless Elegance</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
+        /* --- THEME CONFIGURATION --- */
         :root {
-            --green: #0f3d2e; /* Extracted from your logo */
-            --gold: #c6a664;  /* Extracted from your logo */
-            --cream: #f4f1ea; /* Background tone */
+            --green: #0f3d2e; 
+            --gold: #c6a664;
+            --cream: #f4f1ea;
             --black: #111111;
             --white: #ffffff;
+            --gray: #f9f9f9;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,109 +28,110 @@
             font-family: 'Montserrat', sans-serif; 
             background-color: var(--white); 
             color: var(--black);
-            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+        h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* NAVIGATION */
+        /* --- NAVIGATION --- */
         nav {
             background: var(--white);
             padding: 15px 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        .logo img { height: 50px; }
+        .nav-icons i { font-size: 20px; margin-left: 20px; cursor: pointer; transition: 0.3s; color: var(--green); }
+        .nav-icons i:hover { color: var(--gold); }
+        .cart-icon { position: relative; }
+        .cart-badge {
+            position: absolute; top: -8px; right: -8px;
+            background: var(--gold); color: var(--black);
+            font-size: 10px; font-weight: bold;
+            padding: 2px 6px; border-radius: 50%;
         }
 
-        .logo img { height: 50px; } /* Adjust based on your logo file */
-
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { 
-            text-decoration: none; color: var(--black); font-weight: 500; 
-            font-size: 13px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--gold); }
-        .nav-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; cursor: pointer; }
-
-        /* HERO SECTION */
+        /* --- HERO SECTION --- */
         .hero {
-            height: 90vh;
-            /* Using your stack of hoodies image as background */
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('images/hero-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex; flex-direction: column; 
-            align-items: center; justify-content: center;
-            color: white; text-align: center;
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/hero.jpg');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; text-align: center;
         }
-        .hero h1 { font-size: 4rem; letter-spacing: 5px; color: var(--white); margin-bottom: 10px; }
-        .hero p { font-size: 1.5rem; font-style: italic; font-family: 'Montserrat'; margin-bottom: 30px; color: var(--gold); }
-        
+        .hero-content h1 { font-size: 3.5rem; color: var(--white); margin-bottom: 10px; }
+        .hero-content p { color: var(--gold); font-size: 1.2rem; letter-spacing: 3px; margin-bottom: 30px; }
         .btn {
-            padding: 15px 40px; font-size: 14px; font-weight: 600; text-transform: uppercase;
-            border: none; cursor: pointer; transition: 0.3s; letter-spacing: 2px;
+            padding: 12px 35px; background: var(--gold); color: var(--black);
+            text-decoration: none; font-weight: 600; text-transform: uppercase;
+            border: none; cursor: pointer; transition: 0.3s;
         }
-        .btn-primary { background: var(--gold); color: var(--black); }
-        .btn-primary:hover { background: var(--white); }
+        .btn:hover { background: var(--white); }
 
-        /* PROMOTIONAL BANNER */
-        .promo-banner {
-            width: 100%;
-            margin: 0;
-            line-height: 0; /* Removes gap below image */
+        /* --- FILTERS & SEARCH --- */
+        .controls { padding: 30px 5%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; background: var(--cream); }
+        .search-box { position: relative; width: 300px; }
+        .search-box input { width: 100%; padding: 10px 40px 10px 15px; border: 1px solid #ddd; outline: none; }
+        .search-box i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888; }
+        .filter-btn { padding: 8px 20px; background: transparent; border: 1px solid var(--green); color: var(--green); cursor: pointer; margin-right: 10px; }
+        .filter-btn.active, .filter-btn:hover { background: var(--green); color: var(--white); }
+
+        /* --- PRODUCT GRID --- */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 40px 5%; }
+        .product-card { background: var(--white); transition: 0.3s; border: 1px solid #eee; position: relative; }
+        .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.1); transform: translateY(-5px); }
+        .p-img-container { height: 350px; overflow: hidden; position: relative; }
+        .p-img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover .p-img-container img { transform: scale(1.05); }
+        .p-details { padding: 20px; text-align: center; }
+        .p-title { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
+        .p-price { color: var(--green); font-weight: 700; font-size: 1.1rem; }
+        .add-btn { width: 100%; padding: 10px; background: var(--black); color: white; border: none; margin-top: 10px; cursor: pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+        .add-btn:hover { background: var(--gold); color: black; }
+
+        /* --- CART SIDEBAR --- */
+        .sidebar {
+            position: fixed; top: 0; right: -400px; width: 380px; height: 100%;
+            background: var(--white); box-shadow: -5px 0 30px rgba(0,0,0,0.2);
+            z-index: 2000; transition: 0.4s; display: flex; flex-direction: column;
         }
-        .promo-banner img { width: 100%; height: auto; display: block; }
+        .sidebar.active { right: 0; }
+        .sidebar-header { padding: 20px; background: var(--green); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .cart-item img { width: 60px; height: 80px; object-fit: cover; margin-right: 15px; }
+        .cart-footer { padding: 20px; border-top: 1px solid #ddd; background: var(--cream); }
+        .total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; }
 
-        /* LOOKBOOK SECTION */
-        .section-title { text-align: center; font-size: 2.5rem; margin: 60px 0 30px; letter-spacing: 3px; color: var(--green); }
+        /* --- CHECKOUT MODAL --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: white; width: 90%; max-width: 600px; padding: 30px;
+            border-radius: 4px; max-height: 90vh; overflow-y: auto;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; outline: none; }
         
-        .lookbook-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 0 5%;
-            margin-bottom: 60px;
-        }
-        .lookbook-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-        @media(max-width: 768px) { .lookbook-grid { grid-template-columns: 1fr; } }
-
-        /* PRODUCT GRID */
-        .product-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px; padding: 0 5% 60px;
-        }
-        .product-card { background: var(--white); transition: 0.4s; text-align: center; border: 1px solid #eee; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
-        .product-card img { width: 100%; height: 350px; object-fit: cover; }
-        .p-info { padding: 20px; }
-        .p-price { color: var(--green); font-weight: bold; font-size: 1.1rem; margin: 10px 0; }
-
-        /* CART SIDEBAR */
-        #cart-sidebar {
-            position: fixed; right: -400px; top: 0; width: 380px; height: 100%;
-            background: white; z-index: 2000; transition: 0.4s;
-            padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); display: flex; flex-direction: column;
-        }
-        #cart-sidebar.active { right: 0; }
+        /* QR SECTION */
+        .payment-section { text-align: center; background: #f0fdf4; padding: 20px; margin-top: 20px; border: 1px dashed var(--green); display: none; }
+        #qrcode { margin: 15px auto; display: flex; justify-content: center; }
         
         /* FOOTER */
-        footer { background: var(--black); color: white; padding: 60px 5%; text-align: center; }
+        footer { background: var(--black); color: white; padding: 50px 5%; text-align: center; }
+        .social-icons { margin: 20px 0; }
+        .social-icons a { color: white; margin: 0 15px; font-size: 24px; transition: 0.3s; }
+        .social-icons a:hover { color: var(--gold); }
 
-        /* WhatsApp Button */
-        .wa-float {
-            position:fixed; bottom:30px; right:30px; background:#25d366; 
-            color:white; padding:15px; border-radius:50%; font-size:24px; 
-            z-index:999; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; right: -100%; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .controls { flex-direction: column; }
+            .search-box { width: 100%; }
         }
     </style>
 </head>
@@ -135,134 +139,343 @@
 
     <nav>
         <div class="logo">
-            <img src="images/logo-main.png" alt="AOSE Logo">
+            <img src="images/logo.png" alt="AOSE">
         </div>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#drop">The Drop</a>
-            <a href="#collection">Collection</a>
-            <a href="#lookbook">Lookbook</a>
-        </div>
-        <div class="nav-actions">
-            <i class="fas fa-search"></i>
-            <div style="position:relative;" onclick="toggleCart(true)">
+        <div class="nav-icons">
+            <i class="fas fa-search" onclick="document.querySelector('.search-box input').focus()"></i>
+            <span class="cart-icon" onclick="toggleCart()">
                 <i class="fas fa-shopping-bag"></i>
-                <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--gold); font-size:10px; padding:2px 5px; border-radius:50%;">0</span>
-            </div>
+                <span class="cart-badge" id="cart-count">0</span>
+            </span>
         </div>
     </nav>
 
     <header class="hero">
-        <h1>STYLE ISN'T JUST WORN</h1>
-        <p>IT'S CREATED.</p>
-        <button class="btn btn-primary" onclick="window.location.href='#collection'">Shop The Legacy</button>
+        <div class="hero-content">
+            <h1>Timeless Elegance</h1>
+            <p>Modern Legacy</p>
+            <a href="#shop" class="btn">Shop Collection</a>
+        </div>
     </header>
 
-    <section id="drop" class="promo-banner">
-        <img src="images/banner-drop.jpg" alt="AOSE Hoodie Drop">
-    </section>
-
-    <section id="lookbook">
-        <h2 class="section-title">The Campaign</h2>
-        <div class="lookbook-grid">
-            <div class="lookbook-item">
-                <img src="images/models-group.jpg" alt="AOSE Models">
-            </div>
-            <div class="lookbook-item">
-                <img src="images/collection-grid.jpg" alt="AOSE Collection Grid">
-            </div>
+    <section class="controls" id="shop">
+        <div class="categories">
+            <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+            <button class="filter-btn" onclick="filterProducts('hoodies')">Hoodies</button>
+            <button class="filter-btn" onclick="filterProducts('tshirts')">T-Shirts</button>
+            <button class="filter-btn" onclick="filterProducts('sweatshirts')">Sweatshirts</button>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
+            <i class="fas fa-search"></i>
         </div>
     </section>
 
-    <section id="collection">
-        <h2 class="section-title">Latest Arrivals</h2>
-        <div class="product-grid" id="product-container">
-            </div>
-    </section>
+    <section class="product-grid" id="product-container">
+        </section>
 
-    <footer>
-        <img src="images/logo-main.png" style="height: 60px; filter: brightness(0) invert(1); margin-bottom: 20px;">
-        <p>Timeless Elegance, Modern Legacy.</p>
-        <div style="margin-top: 20px; color: #888; font-size: 12px;">&copy; 2025 AOSE CLOTHING</div>
-    </footer>
-
-    <div id="cart-sidebar">
-        <div style="display:flex; justify-content:space-between; margin-bottom:30px;">
+    <div class="sidebar" id="cart-sidebar">
+        <div class="sidebar-header">
             <h3>Your Bag</h3>
-            <span onclick="toggleCart(false)" style="cursor:pointer; font-size:24px;">&times;</span>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer"></i>
         </div>
-        <div id="cart-items" style="flex-grow:1;"></div>
-        <div style="border-top:1px solid #eee; padding-top:20px;">
-            <h3>Total: ₹<span id="cart-total">0</span></h3>
-            <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="checkout()">Checkout via WhatsApp</button>
+        <div class="cart-items" id="cart-items-container">
+            </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total</span>
+                <span>₹<span id="cart-total">0</span></span>
+            </div>
+            <button class="btn" style="width:100%; background:var(--black); color:white;" onclick="openCheckout()">Proceed to Checkout</button>
         </div>
     </div>
 
-    <a href="https://wa.me/919999999999" class="wa-float"><i class="fab fa-whatsapp"></i></a>
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                <h2>Checkout</h2>
+                <i class="fas fa-times" onclick="closeCheckout()" style="cursor:pointer; font-size:24px;"></i>
+            </div>
+
+            <div id="checkout-step-1">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="cust-name" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="cust-phone" placeholder="91XXXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <textarea id="cust-address" rows="3" placeholder="House No, Street, City, Pincode"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Preference</label>
+                    <select id="cust-location">
+                        <option value="Home Delivery">Home Delivery</option>
+                        <option value="Store Pickup">Store Pickup</option>
+                    </select>
+                </div>
+                <button class="btn" style="width:100%" onclick="generatePayment()">Proceed to Payment</button>
+            </div>
+
+            <div id="checkout-step-2" class="payment-section">
+                <h3>Scan to Pay</h3>
+                <p>Total Amount: <strong>₹<span id="pay-amount"></span></strong></p>
+                <div id="qrcode"></div> <p style="font-size:12px; margin-top:10px; color:#666;">UPI ID: 7887731818@ybl</p>
+                <div style="margin-top:20px; border-top:1px solid #ddd; padding-top:20px;">
+                    <p style="font-size:13px; color:red; margin-bottom:10px;">*After payment, click below to send order details via WhatsApp.</p>
+                    <button class="btn" style="width:100%; background:#25d366; color:white;" onclick="finalizeOrder()">
+                        <i class="fab fa-whatsapp"></i> Confirm & Send Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <img src="images/logo.png" style="height:60px; filter: brightness(0) invert(1);">
+        <div class="social-icons">
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/917887731818" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p>&copy; 2025 AOSE CLOTHING. All Rights Reserved.</p>
+    </footer>
 
     <script>
-        // CONFIGURATION
-        const PHONE_NUMBER = "919999999999"; // REPLACE WITH YOUR NUMBER
+        // --- 1. CONFIGURATION ---
+        const UPI_ID = "7887731818@ybl";
+        const PHONE_NUMBER = "917887731818"; 
 
-        // Since we don't have individual images for every single shirt, 
-        // we will reuse the uploaded images to simulate the product grid.
+        // --- 2. PRODUCT DATABASE (Add unlimited products here) ---
+        // Copy paste the block inside {} to add new items
         const products = [
-            { id: 1, name: "AOSE Signature Hoodie - Green", price: 2499, img: "images/models-group.jpg" },
-            { id: 2, name: "AOSE Essential Hoodie - Beige", price: 2499, img: "images/hero-bg.jpg" }, // Using crop of stack
-            { id: 3, name: "Urban Drop Tee - Purple", price: 1299, img: "images/collection-grid.jpg" },
-            { id: 4, name: "Legacy Crewneck - Black", price: 1899, img: "images/banner-drop.jpg" }
+            {
+                id: 1,
+                name: "AOSE Signature Hoodie",
+                category: "hoodies",
+                price: 2499,
+                image: "images/product1.jpg" // Ensure this file exists
+            },
+            {
+                id: 2,
+                name: "Legacy Crewneck",
+                category: "sweatshirts",
+                price: 1899,
+                image: "images/product2.jpg"
+            },
+            {
+                id: 3,
+                name: "Urban Drop Tee",
+                category: "tshirts",
+                price: 999,
+                image: "images/product3.jpg"
+            },
+             {
+                id: 4,
+                name: "Essential Beige Hoodie",
+                category: "hoodies",
+                price: 2599,
+                image: "images/hero.jpg"
+            }
         ];
 
-        let cart = [];
+        let cart = JSON.parse(localStorage.getItem('aoseCart')) || [];
 
-        function renderProducts() {
+        // --- 3. RENDER PRODUCTS ---
+        function renderProducts(filter = 'all') {
             const container = document.getElementById('product-container');
-            container.innerHTML = products.map(p => `
-                <div class="product-card">
-                    <div style="height:350px; overflow:hidden;">
-                        <img src="${p.img}" alt="${p.name}" style="height:100%; width:100%; object-fit:cover;">
+            container.innerHTML = '';
+            
+            const filtered = filter === 'all' 
+                ? products 
+                : products.filter(p => p.category === filter);
+
+            filtered.forEach(p => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="p-img-container">
+                            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300'">
+                        </div>
+                        <div class="p-details">
+                            <div class="p-title">${p.name}</div>
+                            <div class="p-price">₹${p.price}</div>
+                            <button class="add-btn" onclick="addToCart(${p.id})">Add to Bag</button>
+                        </div>
                     </div>
-                    <div class="p-info">
-                        <h3>${p.name}</h3>
-                        <div class="p-price">₹${p.price}</div>
-                        <button class="btn btn-primary" style="padding:10px 20px; font-size:12px;" onclick="addToCart(${p.id})">Add to Bag</button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            });
         }
 
+        // --- 4. CART LOGIC ---
         function addToCart(id) {
             const product = products.find(p => p.id === id);
             cart.push(product);
-            updateCart();
-            toggleCart(true);
+            saveCart();
+            updateCartUI();
+            toggleCart(true); // Open sidebar
         }
 
-        function updateCart() {
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateCartUI();
+        }
+
+        function saveCart() {
+            localStorage.setItem('aoseCart', JSON.stringify(cart));
+        }
+
+        function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-total').innerText = total;
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
             
-            document.getElementById('cart-items').innerHTML = cart.map(item => `
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
-                    <span>${item.name}</span>
-                    <span>₹${item.price}</span>
-                </div>
-            `).join('');
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="item">
+                        <div style="flex:1;">
+                            <div style="font-weight:600; font-size:14px;">${item.name}</div>
+                            <div style="color:var(--green);">₹${item.price}</div>
+                        </div>
+                        <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="removeFromCart(${index})"></i>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total').innerText = total;
         }
 
-        function toggleCart(show) {
-            document.getElementById('cart-sidebar').classList.toggle('active', show);
+        function toggleCart(forceOpen = false) {
+            const sidebar = document.getElementById('cart-sidebar');
+            if (forceOpen) sidebar.classList.add('active');
+            else sidebar.classList.toggle('active');
         }
 
-        function checkout() {
-            const items = cart.map(i => i.name).join(", ");
+        // --- 5. SEARCH LOGIC ---
+        function searchProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const container = document.getElementById('product-container');
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+            
+            // Re-render manually for search
+            container.innerHTML = '';
+            filtered.forEach(p => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="p-img-container">
+                            <img src="${p.image}">
+                        </div>
+                        <div class="p-details">
+                            <div class="p-title">${p.name}</div>
+                            <div class="p-price">₹${p.price}</div>
+                            <button class="add-btn" onclick="addToCart(${p.id})">Add to Bag</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterProducts(cat) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts(cat);
+        }
+
+        // --- 6. CHECKOUT & QR GENERATION ---
+        function openCheckout() {
+            if(cart.length === 0) return alert("Your bag is empty!");
+            toggleCart(false);
+            document.getElementById('checkout-modal').style.display = 'flex';
+            document.getElementById('checkout-step-1').style.display = 'block';
+            document.getElementById('checkout-step-2').style.display = 'none';
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+
+        function generatePayment() {
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+
+            if(!name || !phone || !address) return alert("Please fill all details");
+
             const total = document.getElementById('cart-total').innerText;
-            const url = `https://wa.me/${PHONE_NUMBER}?text=Order Request: ${items} | Total: ₹${total}`;
-            window.open(url, '_blank');
+            
+            // Show Step 2
+            document.getElementById('checkout-step-1').style.display = 'none';
+            document.getElementById('checkout-step-2').style.display = 'block';
+            document.getElementById('pay-amount').innerText = total;
+
+            // Generate UPI QR Code
+            // Format: upi://pay?pa=UPI_ID&pn=NAME&am=AMOUNT&cu=INR
+            const upiLink = `upi://pay?pa=${UPI_ID}&pn=AOSEClothing&am=${total}&cu=INR`;
+            
+            document.getElementById("qrcode").innerHTML = ""; // Clear previous
+            new QRCode(document.getElementById("qrcode"), {
+                text: upiLink,
+                width: 150,
+                height: 150
+            });
         }
 
+        // --- 7. INVOICE & WHATSAPP ---
+        async function finalizeOrder() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+            const total = document.getElementById('cart-total').innerText;
+            const orderId = "ORD-" + Math.floor(Math.random() * 100000);
+
+            // Create Invoice PDF
+            doc.setFontSize(22);
+            doc.text("AOSE CLOTHING", 20, 20);
+            doc.setFontSize(12);
+            doc.text("Timeless Elegance, Modern Legacy", 20, 30);
+            
+            doc.text(`Order ID: ${orderId}`, 20, 50);
+            doc.text(`Customer: ${name}`, 20, 60);
+            doc.text(`Phone: ${phone}`, 20, 70);
+            doc.text(`Address: ${address}`, 20, 80);
+            
+            let y = 100;
+            doc.text("Items:", 20, y);
+            cart.forEach(item => {
+                y += 10;
+                doc.text(`- ${item.name} (Rs.${item.price})`, 20, y);
+            });
+            
+            y += 20;
+            doc.setFontSize(16);
+            doc.text(`TOTAL PAID: Rs.${total}`, 20, y);
+
+            doc.save(`AOSE_Invoice_${orderId}.pdf`);
+
+            // Send to WhatsApp
+            let itemsList = cart.map(i => i.name).join(", ");
+            let msg = `*NEW ORDER ${orderId}*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${address}%0A*Items:* ${itemsList}%0A*Total Paid:* ₹${total}%0A%0APlease verify payment and ship.`;
+            
+            window.open(`https://wa.me/${PHONE_NUMBER}?text=${msg}`, '_blank');
+            
+            // Reset
+            cart = [];
+            saveCart();
+            window.location.reload();
+        }
+
+        // Initial Render
         renderProducts();
+        updateCartUI();
+
     </script>
 </body>
 </html>
