@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AOSE | The Unlimited Collection</title>
+    <meta name="description" content="AOSE - The Unlimited Collection. Premium Luxury Wear for the modern individual. Authentic craftsmanship and gold-stitch quality.">
+    <meta property="og:title" content="AOSE | Premium Luxury Wear">
+    <meta property="og:description" content="Explore The Unlimited Collection. High-end luxury fashion by AOSE.">
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -79,9 +82,18 @@
         .main-container { padding: 0 5% 60px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; }
         .product-card { transition: 0.4s; }
-        .p-image { height: 400px; background: #dcd0b8; overflow: hidden; position: relative; }
+        .p-image { height: 400px; background: #dcd0b8; overflow: hidden; position: relative; cursor: pointer;}
         .p-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
         .product-card:hover .p-image img { transform: scale(1.08); }
+        
+        /* New Luxury Overlay */
+        .p-image::after {
+            content: 'VIEW COLLECTION';
+            position: absolute; bottom: -50px; left: 0; width: 100%;
+            background: rgba(15, 61, 46, 0.9); color: white; text-align: center;
+            padding: 12px 0; transition: 0.4s; font-size: 0.7rem; letter-spacing: 2px; font-weight: 600;
+        }
+        .product-card:hover .p-image::after { bottom: 0; }
 
         .p-info { padding: 20px; text-align: center; }
         .p-price { color: var(--primary); font-weight: 700; font-size: 1.2rem; margin-bottom: 15px; }
@@ -110,7 +122,7 @@
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
 
-        .sidebar { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: white; z-index: 2001; transition: 0.5s; }
+        .sidebar { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: white; z-index: 2001; transition: 0.5s; display: flex; flex-direction: column; }
         .sidebar.active { right: 0; }
 
         @media (max-width: 768px) {
@@ -123,13 +135,13 @@
 
     <header>
         <div class="brand-container">
-            <img src="aose ad.png" alt="Logo">
+            <img src="aose ad.png" alt="Logo" onerror="this.src='https://via.placeholder.com/60x60?text=AOSE'">
             <span class="brand-name">AOSE</span>
         </div>
         <div class="nav-tools">
             <span onclick="openSizeGuide()" style="cursor:pointer; font-size:0.7rem; font-weight:700; border-bottom:1px solid">SIZE GUIDE</span>
             <div class="cart-icon" onclick="toggleCart()">
-                <i class="fas fa-shopping-bag"></i>
+                <i class="fas fa-shopping-bag" aria-label="Shopping Bag"></i>
                 <span class="cart-badge" id="cart-count">0</span>
             </div>
         </div>
@@ -176,12 +188,15 @@
     </section>
 
     <footer style="background:#0a0a0a; color:white; padding:60px 5%; text-align:center;">
-        <img src="aose ad.png" style="height:40px; filter:invert(1); margin-bottom:20px;">
+        <img src="aose ad.png" style="height:40px; filter:invert(1); margin-bottom:20px;" onerror="this.style.display='none'">
         <div style="margin-bottom:20px;">
             <a href="https://www.instagram.com/official_aose?igsh=MThlcDhqanBwdjdlaw%3D%3D&utm_source=qr" target="_blank" style="color:white; margin:0 15px; font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
             <a href="https://wa.me/917887731818" target="_blank" style="color:white; margin:0 15px; font-size:1.5rem;"><i class="fab fa-whatsapp"></i></a>
         </div>
         <p style="font-size:10px; color:#555;">© 2025 AOSE CLOTHING COMPANY. AUTHENTIC LUXURY.</p>
+        <div style="margin-top:15px; font-size:9px; color:#333;">
+            <span>SHIPPING & RETURNS</span> | <span>PRIVACY POLICY</span>
+        </div>
     </footer>
 
     <div class="modal" id="size-modal">
@@ -205,11 +220,11 @@
             <h3>BAG</h3><i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer"></i>
         </div>
         <div id="cart-items" style="padding:25px; flex:1; overflow-y:auto;"></div>
-        <div style="padding:25px; background:#f9f9f9;">
+        <div id="cart-footer" style="padding:25px; background:#f9f9f9;">
             <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700;">
                 <span>TOTAL</span><span>₹<span id="cart-total">0</span></span>
             </div>
-            <button class="add-to-cart" onclick="openCheckout()">Checkout</button>
+            <button class="add-to-cart" id="checkout-btn" onclick="openCheckout()">Checkout</button>
         </div>
     </div>
 
@@ -218,15 +233,16 @@
             <i class="fas fa-times" style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="document.getElementById('checkout-modal').style.display='none'"></i>
             <div id="step-info">
                 <h3>Delivery</h3>
-                <input type="text" id="c-name" placeholder="Name" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
+                <input type="text" id="c-name" placeholder="Full Name" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
                 <input type="tel" id="c-phone" placeholder="WhatsApp Number" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
-                <textarea id="c-address" placeholder="Address" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;" rows="3"></textarea>
-                <button class="add-to-cart" onclick="goToPayment()">Proceed</button>
+                <textarea id="c-address" placeholder="Complete Shipping Address" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;" rows="3"></textarea>
+                <button class="add-to-cart" onclick="goToPayment()">Proceed to Payment</button>
             </div>
             <div id="step-pay" style="display:none; text-align:center;">
                 <h3>Scan to Pay</h3>
+                <p style="font-size: 0.8rem; margin: 10px 0;">Please pay exactly ₹<span id="final-amount">0</span></p>
                 <div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
-                <button class="add-to-cart" style="background:#25d366;" onclick="confirmOrder()">Confirm Order</button>
+                <button class="add-to-cart" style="background:#25d366;" onclick="confirmOrder()">Confirm Order via WhatsApp</button>
             </div>
         </div>
     </div>
@@ -250,7 +266,6 @@
             renderCategories();
             products.forEach(p => { 
                 userSelections[p.id] = { size: null, qty: 1 }; 
-                p.stock = { S: 100, M: 100, L: 100, XL: 100 };
             });
             renderProducts(products);
             updateCart();
@@ -267,7 +282,7 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = list.map(p => `
                 <div class="product-card">
-                    <div class="p-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=AOSE'"></div>
+                    <div class="p-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=AOSE+LUXURY'"></div>
                     <div class="p-info">
                         <div style="font-weight:600; margin-bottom:5px;">${p.name}</div>
                         <div class="p-price">₹${p.price}</div>
@@ -288,11 +303,19 @@
 
         function addToCart(pid, btn) {
             const sel = userSelections[pid];
-            if(!sel.size) return alert("Please select a size.");
+            if(!sel.size) return alert("Please select a size first.");
+            
             const product = products.find(p => p.id === pid);
             cart.push({ ...product, selSize: sel.size, selQty: 1, tempId: Date.now() });
-            btn.innerHTML = "ADDED";
-            setTimeout(() => { btn.innerHTML = "Add to Bag"; }, 1000);
+            
+            btn.innerHTML = "<i class='fas fa-check'></i> ADDED";
+            btn.style.background = "#222";
+            
+            setTimeout(() => { 
+                btn.innerHTML = "Add to Bag"; 
+                btn.style.background = "var(--primary)";
+            }, 1500);
+            
             updateCart();
             toggleCart();
         }
@@ -301,26 +324,38 @@
             localStorage.setItem('aose_cart', JSON.stringify(cart));
             document.getElementById('cart-count').innerText = cart.length;
             let total = 0;
-            document.getElementById('cart-items').innerHTML = cart.map((item, idx) => {
-                total += item.price;
-                return `<div style="display:flex; gap:15px; margin-bottom:15px;">
-                    <img src="${item.img}" style="width:50px; height:60px; object-fit:cover;">
-                    <div style="flex:1; font-size:0.8rem;">
-                        <b>${item.name}</b><br>Size: ${item.selSize}<br>₹${item.price}
-                    </div>
-                    <i class="fas fa-trash" onclick="removeFromCart(${idx})" style="cursor:pointer; color:#ddd;"></i>
-                </div>`;
-            }).join('');
+            
+            const cartItemsContainer = document.getElementById('cart-items');
+            
+            if(cart.length === 0) {
+                cartItemsContainer.innerHTML = `<div style="text-align:center; padding-top:50px; opacity:0.5">Your bag is empty</div>`;
+                document.getElementById('checkout-btn').style.display = 'none';
+            } else {
+                document.getElementById('checkout-btn').style.display = 'block';
+                cartItemsContainer.innerHTML = cart.map((item, idx) => {
+                    total += item.price;
+                    return `<div style="display:flex; gap:15px; margin-bottom:15px; align-items:center;">
+                        <img src="${item.img}" style="width:50px; height:60px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/50x60'">
+                        <div style="flex:1; font-size:0.8rem;">
+                            <b>${item.name}</b><br>Size: ${item.selSize}<br>₹${item.price}
+                        </div>
+                        <i class="fas fa-trash" onclick="removeFromCart(${idx})" style="cursor:pointer; color:#ccc;"></i>
+                    </div>`;
+                }).join('');
+            }
             document.getElementById('cart-total').innerText = total;
         }
 
         function removeFromCart(idx) { cart.splice(idx,1); updateCart(); }
+        
         function toggleCart() { 
             document.getElementById('cart-sidebar').classList.toggle('active');
             const ov = document.getElementById('overlay');
             ov.style.display = (ov.style.display === 'block') ? 'none' : 'block';
         }
+
         function filterCat(cat, btn) { activeCat = cat; filterItems(); renderCategories(); }
+        
         function filterItems() {
             const term = document.getElementById('searchBox').value.toLowerCase();
             const filtered = products.filter(p => (activeCat === "All" || p.cat === activeCat) && p.name.toLowerCase().includes(term));
@@ -330,23 +365,56 @@
         function openSizeGuide() { document.getElementById('size-modal').style.display='flex'; }
         function closeSizeGuide() { document.getElementById('size-modal').style.display='none'; }
         
-        function openCheckout() { toggleCart(); document.getElementById('checkout-modal').style.display='flex'; }
+        function openCheckout() { 
+            if(cart.length === 0) return;
+            toggleCart(); 
+            document.getElementById('checkout-modal').style.display='flex'; 
+        }
         
         function goToPayment() {
-            if(!document.getElementById('c-name').value) return alert("Enter details");
+            const name = document.getElementById('c-name').value;
+            const phone = document.getElementById('c-phone').value;
+            const address = document.getElementById('c-address').value;
+            
+            if(!name || !phone || !address) return alert("Please fill in all delivery details.");
+            
+            const total = document.getElementById('cart-total').innerText;
+            document.getElementById('final-amount').innerText = total;
             document.getElementById('step-info').style.display='none';
             document.getElementById('step-pay').style.display='block';
+            
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
-                text: `upi://pay?pa=7887731818@ybl&pn=AOSE&am=${document.getElementById('cart-total').innerText}&cu=INR`,
-                width: 160, height: 160
+                text: `upi://pay?pa=7887731818@ybl&pn=AOSE&am=${total}&cu=INR`,
+                width: 180, height: 180
             });
         }
 
         function confirmOrder() {
-            const msg = `NEW ORDER - AOSE: ${cart.map(i => i.name).join(", ")}`;
+            const name = document.getElementById('c-name').value;
+            const address = document.getElementById('c-address').value;
+            const phone = document.getElementById('c-phone').value;
+            const total = document.getElementById('cart-total').innerText;
+            
+            // Generate detailed item list for WhatsApp
+            let itemsList = cart.map(i => `- ${i.name} [Size: ${i.selSize}]`).join('%0A');
+            
+            const msg = `*NEW ORDER - AOSE*%0A%0A` +
+                        `*Customer:* ${name}%0A` +
+                        `*Phone:* ${phone}%0A` +
+                        `*Address:* ${address}%0A%0A` +
+                        `*Items:*%0A${itemsList}%0A%0A` +
+                        `*Total Amount Paid:* ₹${total}%0A%0A` +
+                        `_Please confirm receipt of payment._`;
+            
             window.open(`https://wa.me/917887731818?text=${msg}`);
-            cart = []; updateCart(); location.reload();
+            
+            // Clear cart and reset
+            cart = []; 
+            updateCart(); 
+            document.getElementById('checkout-modal').style.display='none';
+            alert("Thank you! Please share the payment screenshot on WhatsApp to finalize.");
+            location.reload();
         }
 
         init();
