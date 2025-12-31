@@ -69,7 +69,11 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1999; display: none; }
         
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: var(--bg-lux); width: 100%; max-width: 450px; padding: 30px; border-radius: 8px; position: relative; }
+        .modal-box { background: var(--bg-lux); width: 100%; max-width: 500px; padding: 30px; border-radius: 8px; position: relative; max-height: 90vh; overflow-y: auto; }
+
+        .size-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; }
+        .size-table th, .size-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 0.8rem; }
+        .size-table th { background: var(--primary); color: white; }
 
         footer { background: #000; color: white; padding: 40px 5%; text-align: center; }
 
@@ -119,16 +123,27 @@
 
     <div class="modal" id="modal-size">
         <div class="modal-box">
-            <h3 style="margin-bottom:15px">Size Chart (Inches)</h3>
-            <table style="width:100%; border-collapse:collapse; text-align:center;">
-                <tr style="background:var(--primary); color:white;">
-                    <th style="padding:10px;">Size</th><th>Chest</th><th>Length</th>
-                </tr>
-                <tr><td style="padding:10px; border:1px solid #ddd;">S</td><td style="border:1px solid #ddd;">38</td><td style="border:1px solid #ddd;">27</td></tr>
-                <tr><td style="padding:10px; border:1px solid #ddd;">M</td><td style="border:1px solid #ddd;">40</td><td style="border:1px solid #ddd;">28</td></tr>
-                <tr><td style="padding:10px; border:1px solid #ddd;">L</td><td style="border:1px solid #ddd;">42</td><td style="border:1px solid #ddd;">29</td></tr>
+            <h3 style="margin-bottom:15px; font-family: var(--font-head);">Size Guide (Inches)</h3>
+            
+            <p style="font-weight: 600; color: var(--primary); border-bottom: 2px solid var(--primary); display: inline-block; margin-bottom: 10px;">STITCH (Tailored Fit)</p>
+            <table class="size-table">
+                <tr><th>Size</th><th>Chest</th><th>Length</th><th>Shoulder</th></tr>
+                <tr><td>S</td><td>38</td><td>27</td><td>17.0</td></tr>
+                <tr><td>M</td><td>40</td><td>28</td><td>18.0</td></tr>
+                <tr><td>L</td><td>42</td><td>29</td><td>19.0</td></tr>
+                <tr><td>XL</td><td>44</td><td>30</td><td>20.0</td></tr>
             </table>
-            <button class="add-btn" style="margin-top:20px" onclick="closeModal('modal-size')">CLOSE</button>
+
+            <p style="font-weight: 600; color: var(--primary); border-bottom: 2px solid var(--primary); display: inline-block; margin-bottom: 10px;">WEAR (Relaxed/Oversized)</p>
+            <table class="size-table">
+                <tr><th>Size</th><th>Chest</th><th>Length</th><th>Shoulder</th></tr>
+                <tr><td>S</td><td>42</td><td>28</td><td>19.0</td></tr>
+                <tr><td>M</td><td>44</td><td>29</td><td>20.0</td></tr>
+                <tr><td>L</td><td>46</td><td>30</td><td>21.0</td></tr>
+                <tr><td>XL</td><td>48</td><td>31</td><td>22.0</td></tr>
+            </table>
+
+            <button class="add-btn" style="margin-top:10px" onclick="closeModal('modal-size')">CLOSE CHART</button>
         </div>
     </div>
 
@@ -136,7 +151,7 @@
         <div class="modal-box">
             <h3>Checkout</h3>
             <input type="text" id="c-name" placeholder="Name" style="width:100%; padding:12px; margin:10px 0;">
-            <textarea id="c-addr" placeholder="Address" style="width:100%; padding:12px; margin-bottom:10px;"></textarea>
+            <textarea id="c-addr" placeholder="Full Address with PIN" style="width:100%; padding:12px; margin-bottom:10px;"></textarea>
             <div id="qrcode" style="display:flex; justify-content:center; margin:10px 0;"></div>
             <button class="add-btn" onclick="finishOrder()">CONFIRM VIA WHATSAPP</button>
             <button class="add-btn" style="background:#666; margin-top:10px;" onclick="closeModal('modal-checkout')">CANCEL</button>
@@ -152,7 +167,7 @@
         const products = [
             { id: 1, cat: 'signature', name: "AOSE Signature Stitch", price: 999, img: "pro.jpg" },
             { id: 2, cat: 'signature', name: "AOSE Heritage Tee", price: 999, img: "proo10.jpg" },
-            { id: 3, cat: 'urban', name: "AOSE Urban Noir", price: 999, img: "proo11.jpg" },
+            { id: 3, cat: 'urban', name: "AOSE Urban Wear", price: 999, img: "proo11.jpg" },
             { id: 4, cat: 'urban', name: "AOSE Prime Fit", price: 999, img: "proo12.jpg" }
         ];
 
@@ -190,7 +205,7 @@
         }
 
         function addToCart(pid) {
-            if(!selections[pid]) return alert("Select a size");
+            if(!selections[pid]) return alert("Please select a size");
             const p = products.find(x => x.id === pid);
             cart.push({...p, size: selections[pid]});
             updateUI();
@@ -203,7 +218,7 @@
             let total = 0;
             list.innerHTML = cart.map((item, i) => {
                 total += item.price;
-                return `<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size: 0.9rem;">
                     <span>${item.name} (${item.size})</span>
                     <span>₹${item.price}</span>
                 </div>`;
@@ -221,19 +236,22 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function openCheckout() {
-            if(cart.length === 0) return alert("Bag empty");
+            if(cart.length === 0) return alert("Bag is empty");
             toggleCart();
             openModal('modal-checkout');
-            const upiUrl = `upi://pay?pa=7887731818@ybl&pn=AOSE&am=${document.getElementById('cart-total').innerText}&cu=INR`;
+            const total = document.getElementById('cart-total').innerText;
+            const upiUrl = `upi://pay?pa=7887731818@ybl&pn=AOSE&am=${total}&cu=INR`;
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), { text: upiUrl, width: 120, height: 120 });
         }
 
         function finishOrder() {
             const name = document.getElementById('c-name').value;
-            if(!name) return alert("Enter name");
-            const msg = `New Order from ${name}: ${cart.map(c => c.name + '(' + c.size + ')').join(", ")}`;
-            window.open(`https://wa.me/917887731818?text=${encodeURIComponent(msg)}`);
+            const addr = document.getElementById('c-addr').value;
+            if(!name || !addr) return alert("Fill delivery details");
+            const orderTxt = cart.map(c => c.name + '(' + c.size + ')').join(", ");
+            const msg = `*NEW ORDER*%0A*Name:* ${name}%0A*Address:* ${addr}%0A*Items:* ${orderTxt}%0A*Total:* ₹${document.getElementById('cart-total').innerText}`;
+            window.open(`https://wa.me/917887731818?text=${msg}`);
         }
 
         renderProducts(products);
