@@ -197,8 +197,8 @@
             width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); /* Mirror effect */
         }
         #shirt-overlay {
-            position: absolute; top: 20%; left: 15%; width: 70%;
-            pointer-events: none; transition: 0.1s;
+            position: absolute; top: 25%; left: 15%; width: 70%;
+            pointer-events: none; transition: 0.1s; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
         }
         .controls { width: 100%; padding: 0 20px; }
         .control-group { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
@@ -263,6 +263,12 @@
         .footer-social a { color: var(--gold); transition: 0.3s; }
         .footer-social a:hover { color: white; transform: translateY(-3px); }
 
+        /* --- HIDDEN INVOICE FOR PRINTING --- */
+        #invoice {
+            position: fixed; top: 0; left: -9999px; width: 210mm; min-height: 297mm;
+            background: white; padding: 40px; font-family: serif; color: black; z-index: -1;
+        }
+
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr 1fr; gap: 15px; }
             .card-img-wrap { height: 260px; }
@@ -276,7 +282,7 @@
 <header>
     <div class="nav-container">
         <a href="#" class="logo">
-            <img src="aose ad.png" alt="AOSE">
+            <img src="aose ad.jpg" alt="AOSE">
             <span class="logo-text">AOSE</span>
         </a>
         <div class="nav-icons">
@@ -357,6 +363,7 @@
     
     <div class="modal-body">
         <h3 style="margin-bottom:15px; width:100%; text-align:center;">Virtual Try-On</h3>
+        <p style="text-align:center; font-size:0.8rem; margin-bottom:10px; color:#666;">We remove the background automatically. Adjust position below.</p>
         <div class="camera-container">
             <video id="camera-feed" autoplay playsinline></video>
             <img id="shirt-overlay" src="" alt="Shirt Overlay">
@@ -368,14 +375,13 @@
             </div>
             <div class="control-group">
                 <label>V-Pos</label>
-                <input type="range" min="0" max="100" value="20" oninput="adjustOverlay('top', this.value)">
+                <input type="range" min="0" max="100" value="25" oninput="adjustOverlay('top', this.value)">
             </div>
             <div class="control-group">
                 <label>H-Pos</label>
                 <input type="range" min="0" max="100" value="15" oninput="adjustOverlay('left', this.value)">
             </div>
         </div>
-        <p style="font-size:0.7rem; color:#666; margin-top:10px; text-align:center;">Use sliders to fit the shirt to your body.</p>
     </div>
 </div>
 
@@ -425,7 +431,7 @@
         <i class="fa-solid fa-check-circle" style="font-size:4rem; color:var(--gold);"></i>
         <h3>Order Placed!</h3>
         <p>ID: <strong id="finalId"></strong></p>
-        <button class="btn-full" onclick="downloadInvoice()" style="margin-top:15px; background:#333;">Invoice</button>
+        <button class="btn-full" onclick="downloadInvoice()" style="margin-top:15px; background:#333;">Download Invoice</button>
     </div>
 </div>
 
@@ -455,14 +461,36 @@
     <div id="trackRes" style="margin-top:15px; text-align:center; font-weight:bold;"></div>
 </div>
 
-<div id="invoice" style="display:none; padding:30px; font-family:serif;">
-    <h2 style="color:#0f3d2e;">AOSE CLOTHING</h2>
-    <p>Receipt</p>
-    <hr>
-    <p>ID: <span id="invId"></span></p>
-    <p>To: <span id="invName"></span></p>
-    <div id="invItems" style="margin-top:20px;"></div>
-    <h3 style="text-align:right;">Total: ₹<span id="invTotal"></span></h3>
+<div id="invoice">
+    <div style="border: 2px solid #0f3d2e; padding: 40px; height: 100%;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h1 style="color:#0f3d2e; margin:0;">AOSE CLOTHING</h1>
+            <div style="text-align:right;">
+                <h3 style="margin:0; color:#c6a664;">INVOICE</h3>
+                <p style="margin:0;">Date: <span id="invDate"></span></p>
+                <p style="margin:0;">Order ID: <span id="invId"></span></p>
+            </div>
+        </div>
+        <hr style="border-color:#0f3d2e; margin:20px 0;">
+        <div>
+            <strong>Bill To:</strong><br>
+            <span id="invName"></span><br>
+            <span id="invPhone"></span><br>
+            <span id="invAddr"></span>
+        </div>
+        <table style="width:100%; margin-top:30px; border-collapse:collapse;">
+            <thead style="background:#eee;">
+                <tr><th style="padding:10px; text-align:left;">Item</th><th style="padding:10px; text-align:right;">Price</th></tr>
+            </thead>
+            <tbody id="invItems"></tbody>
+        </table>
+        <div style="margin-top:30px; text-align:right;">
+            <h2>Total: ₹<span id="invTotal"></span></h2>
+        </div>
+        <div style="position:absolute; bottom:40px; width:100%; text-align:center; color:#666; font-size:0.8rem;">
+            Thank you for shopping with AOSE Clothing. | www.aose.com
+        </div>
+    </div>
 </div>
 
 <div class="toast" id="toast"><i class="fa-solid fa-check"></i> <span>Message</span></div>
@@ -471,7 +499,7 @@
 /* --- CONFIG --- */
 const CONFIG = { upiId: "7887731818@ybl", adminPass: "admin123", brand: "AOSE Clothing" };
 
-/* --- PRODUCTS (Mapped from uploads) --- */
+/* --- PRODUCTS --- */
 const products = [
     { id: 1, name: "Midnight Navy", price: 1499, img: "pro17.jpg" },
     { id: 2, name: "Azure Executive", price: 1299, img: "propro2.jpg" },
@@ -499,15 +527,13 @@ let orders = JSON.parse(localStorage.getItem('aose_orders')) || [];
 let user = JSON.parse(localStorage.getItem('aose_user')) || null;
 let selections = {};
 let currentOrder = null;
-let stream = null; // Camera stream
+let stream = null; 
 
 /* --- INIT --- */
 window.onload = () => {
     renderShop();
     updateCartUI();
     updateUserUI();
-    
-    // Animation Observer
     const observer = new IntersectionObserver(entries => {
         entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
     });
@@ -547,14 +573,47 @@ function selectSize(pid, size, el) {
     el.classList.add('selected');
 }
 
-/* --- VIRTUAL TRY-ON --- */
+/* --- VIRTUAL TRY-ON (AUTO BG REMOVAL) --- */
 function openTryOn(imgSrc) {
     closeAll();
     const modal = document.getElementById('tryonModal');
     document.getElementById('overlay').classList.add('active');
     modal.classList.add('active');
-    document.getElementById('shirt-overlay').src = imgSrc;
+    
+    // Process image for transparency
+    processImageForTransparentBackground(imgSrc, (processedDataUrl) => {
+        document.getElementById('shirt-overlay').src = processedDataUrl;
+    });
+    
     startCamera();
+}
+
+function processImageForTransparentBackground(imgSrc, callback) {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = imgSrc;
+    img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        
+        // Simple Chroma Key: Turn white pixels transparent
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i], g = data[i+1], b = data[i+2];
+            // Threshold for white (adjust 240 if needed)
+            if (r > 240 && g > 240 && b > 240) {
+                data[i+3] = 0; // Alpha = 0 (Transparent)
+            }
+        }
+        
+        ctx.putImageData(imgData, 0, 0);
+        callback(canvas.toDataURL());
+    };
 }
 
 async function startCamera() {
@@ -562,7 +621,7 @@ async function startCamera() {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         document.getElementById('camera-feed').srcObject = stream;
     } catch (e) {
-        alert("Camera access required for Virtual Try-On. Please allow permissions.");
+        alert("Camera access required for Virtual Try-On.");
     }
 }
 
@@ -662,7 +721,9 @@ function confirmOrder() {
     currentOrder = {
         id: uid,
         customer: document.getElementById('cName').value,
+        email: document.getElementById('cEmail').value,
         phone: document.getElementById('cPhone').value,
+        address: document.getElementById('cAddr').value,
         items: cart.map(i=>({name:i.name, size:i.size, qty:i.qty, price:i.price})),
         total: document.getElementById('payAmount').innerText,
         date: new Date().toLocaleDateString(),
@@ -678,14 +739,31 @@ function confirmOrder() {
 
 function downloadInvoice() {
     const el = document.getElementById('invoice');
+    
+    // Populate Data
     document.getElementById('invId').innerText = currentOrder.id;
+    document.getElementById('invDate').innerText = currentOrder.date;
     document.getElementById('invName').innerText = currentOrder.customer;
+    document.getElementById('invPhone').innerText = currentOrder.phone;
+    document.getElementById('invAddr').innerText = currentOrder.address;
     document.getElementById('invTotal').innerText = currentOrder.total;
+    
     document.getElementById('invItems').innerHTML = currentOrder.items.map(i => `
-        <div style="border-bottom:1px solid #000; padding:5px 0;">${i.name} (${i.size}) x${i.qty} - ₹${i.price*i.qty}</div>
+        <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px;">${i.name} (${i.size}) x${i.qty}</td>
+            <td style="padding:10px; text-align:right;">₹${i.price*i.qty}</td>
+        </tr>
     `).join('');
-    el.style.display='block';
-    html2pdf(el).then(() => el.style.display='none');
+
+    // Generate PDF (High Quality Settings)
+    const opt = {
+        margin: 0,
+        filename: `Invoice_${currentOrder.id}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(el).save();
 }
 
 /* --- AUTH --- */
